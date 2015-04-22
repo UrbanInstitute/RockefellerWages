@@ -1,0 +1,4 @@
+app/bundle.*
+app/bower.*
+bower_components/*
+node_modules/*

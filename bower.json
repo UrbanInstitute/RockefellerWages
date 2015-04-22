@@ -1,0 +1,22 @@
+{
+  "name": "RockefellerWages",
+  "version": "0.0.0",
+  "authors": [
+    "Ben Southgate <bsouthga@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4",
+    "d3": "~3.5.5",
+    "topojson": "~1.6.19",
+    "select2": "~3.5.2",
+    "select2-bootstrap-css": "~1.4.6"
+  }
+}
