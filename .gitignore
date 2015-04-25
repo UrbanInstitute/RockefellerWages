@@ -1,5 +1,7 @@
 app/bundle.*
 app/bower.*
 app/data/*
+.grunt/*
+dist/*
 bower_components/*
 node_modules/*

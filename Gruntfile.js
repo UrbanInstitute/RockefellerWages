@@ -5,6 +5,40 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
 
+    uglify: {
+      main: {
+        files: {
+          'dist/bundle.js': ['app/bundle.js'],
+          'dist/bower.js': ['app/bower.js']
+        }
+      }
+    },
+
+    cssmin: {
+      main: {
+        files: {
+          'dist/bower.css': ['app/bower.css'],
+          'dist/bundle.css': ['app/bundle.css']
+        }
+      }
+    },
+
+    shell: {
+      makeDist: {
+        command: 'mkdir -p dist'
+      },
+      rmDist : {
+        command : 'rm -rf dist'
+      }
+    },
+
+    'gh-pages': {
+      options: {
+        base: 'dist'
+      },
+      src: ['**']
+    },
+
     concat: {
       css: {
         src: ['app/css/*.css'],
@@ -12,17 +46,28 @@ module.exports = function(grunt) {
       },
     },
 
+    copy : {
+      main: {
+        files: [
+          {src: 'app/index.html', dest: 'dist/index.html'}
+        ]
+      }
+    },
+
+
     // vendor client deps
     bower_concat: {
       all: {
         dest: 'app/bower.js',
         cssDest: 'app/bower.css',
         dependencies: {
+          'jquery-ui' : 'jquery',
           'bootstrap': 'jquery',
           'angular': 'jquery',
           'angular-route' : 'angular',
           'angular-ui-select' : 'angular',
           'angular-sanitize' : 'angular',
+          'angular-ui-slider' : ['jquery', 'jquery-ui', 'angular'],
           'topojson' : 'd3'
         },
         bowerOptions: {
@@ -89,11 +134,17 @@ module.exports = function(grunt) {
     'watch'
   ];
 
-  var deploy = [
-  ];
+  var deploy = prep.concat([
+    'shell:makeDist',
+    'uglify',
+    'cssmin',
+    'copy',
+    'gh-pages',
+    'shell:rmDist'
+  ]);
 
   grunt.registerTask('default', prep.concat(watch));
   grunt.registerTask('build', prep);
-  grunt.registerTask('deploy', prep.concat(deploy));
+  grunt.registerTask('deploy', deploy);
 
 };

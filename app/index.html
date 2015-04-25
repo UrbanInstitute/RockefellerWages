@@ -83,7 +83,8 @@
         </div>
 
         <div class="col-sm-5">
-          <input type="range" min="1990" max="2013">
+          <p>Year : {{ year }}</p>
+          <div id="year-slider" ui-slider="{range: true}" min="1990" max="2013" ng-model="year"></div>
         </div>
 
       </div>
