@@ -1,0 +1,107 @@
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  color: #fff;
+  font-family: Lato;
+  font-weight: 300;
+}
+
+h1 {
+  font-weight: 300;
+}
+
+#topNav {
+  background-color: #000;
+  border-bottom: 1px solid #fff;
+}
+
+#content {
+  margin-top: 50px;
+}
+
+.industry-select-container {
+  height:100%;
+  border-collapse:collapse;
+  display : table;
+}
+
+.industry-select {
+  display : table-row;
+  vertical-align : bottom;
+  height : 1px;
+}
+
+.urban-header {
+  display: inline-block;
+  width: 100%;
+  min-width: 250px;
+}
+
+.share {
+  position: relative;
+  height: 48px;
+}
+
+.logo{
+  display: inline;
+}
+
+.shareMaster {
+  border-left: 1px solid #fff;
+  width: 70px;
+  height: 48px;
+  padding-left: 20px;
+  display: inline-block;
+  float: right;
+  opacity: 1;
+}
+
+.socials a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.socials a:hover {
+  color: #0096d2;
+}
+
+.socials {
+  float: right;
+  color: #fff;
+  opacity: 0;
+  transition: opacity .25s ease-in-out;
+  -moz-transition: opacity .25s ease-in-out;
+  -webkit-transition: opacity .25s ease-in-out;
+}
+
+.share:hover .shareMaster {
+  opacity: 0.5;
+  transition: opacity .25s ease-in-out;
+  -moz-transition: opacity .25s ease-in-out;
+  -webkit-transition: opacity .25s ease-in-out;
+}
+
+.share:hover .socials {
+  opacity: 1;
+  transition: opacity .25s ease-in-out;
+  -moz-transition: opacity .25s ease-in-out;
+  -webkit-transition: opacity .25s ease-in-out;
+}
+
+.circle {
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  line-height: 25px;
+  margin-top: 10px;
+  margin-right: 5px;
+  background-color: #0096d2;
+  color: #fff;
+  display: inline-block;
+  text-decoration: none;
+}
+
+

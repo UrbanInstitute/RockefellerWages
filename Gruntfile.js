@@ -19,9 +19,11 @@ module.exports = function(grunt) {
         cssDest: 'app/bower.css',
         dependencies: {
           'bootstrap': 'jquery',
-          'topojson' : 'd3',
-          'select2-bootstrap-css' : 'select2',
-          'select2' : 'jquery'
+          'angular': 'jquery',
+          'angular-route' : 'angular',
+          'angular-ui-select' : 'angular',
+          'angular-sanitize' : 'angular',
+          'topojson' : 'd3'
         },
         bowerOptions: {
           relative: false
