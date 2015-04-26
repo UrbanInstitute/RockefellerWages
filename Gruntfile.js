@@ -1,6 +1,5 @@
 module.exports = function(grunt) {
 
-  // load grunt-* modules from package.json
   require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
@@ -60,15 +59,23 @@ module.exports = function(grunt) {
       all: {
         dest: 'app/bower.js',
         cssDest: 'app/bower.css',
-        dependencies: {
-          'jquery-ui' : 'jquery',
-          'bootstrap': 'jquery',
-          'angular': 'jquery',
-          'angular-route' : 'angular',
-          'angular-ui-select' : 'angular',
-          'angular-sanitize' : 'angular',
-          'angular-ui-slider' : ['jquery', 'jquery-ui', 'angular'],
-          'topojson' : 'd3'
+        include : [
+          'jquery',
+          'jquery-ui',
+          'bootstrap',
+          'angular',
+          'angular-route',
+          'angular-ui-select',
+          'angular-sanitize',
+          'angular-ui-slider',
+          'd3',
+          'topojson'
+        ],
+        mainFiles: {
+          'jquery-ui': ['ui/jquery-ui.js', 'themes/smoothness/jquery-ui.css']
+        },
+        dependencies : {
+          'angular-ui-slider' : 'jquery-ui'
         },
         bowerOptions: {
           relative: false
@@ -82,7 +89,8 @@ module.exports = function(grunt) {
       },
       scripts : {
         "files" : [
-          './app/js/*.js'
+          './app/js/*.js',
+          './app/js/controllers/*.js'
         ],
         "tasks" : ['browserify']
       },
@@ -129,10 +137,10 @@ module.exports = function(grunt) {
     'concat:css'
   ];
 
-  var watch = [
+  var watch = prep.concat([
     'browserSync',
     'watch'
-  ];
+  ]);
 
   var deploy = prep.concat([
     'shell:makeDist',
@@ -143,7 +151,7 @@ module.exports = function(grunt) {
     'shell:rmDist'
   ]);
 
-  grunt.registerTask('default', prep.concat(watch));
+  grunt.registerTask('default', watch);
   grunt.registerTask('build', prep);
   grunt.registerTask('deploy', deploy);
 

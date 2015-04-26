@@ -12,6 +12,25 @@ h1 {
   font-weight: 300;
 }
 
+input:focus{
+    outline: 0;
+}
+
+.btn-primary {
+  font-weight: 300;
+  background-color: #777;
+  color: #fff;
+  float: right;
+  border-radius: 0px;
+  padding: 5px 10px;
+  margin-left: 5px;
+  border : none;
+}
+
+.btn-primary.selected {
+  background-color: #0096d2;
+}
+
 #topNav {
   background-color: #000;
   border-bottom: 1px solid #fff;
@@ -19,6 +38,10 @@ h1 {
 
 #content {
   margin-top: 50px;
+}
+
+.row {
+  margin-bottom: 20px;
 }
 
 .industry-select-container {
@@ -106,4 +129,24 @@ h1 {
 
 .year-slider {
   background-color: #0096d2
+}
+
+.ui-slider-horizontal {
+  height: 5px;
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+  top: -7.5px;
+  margin-left: -.6em;
+  border-radius: 20px;
+  background-color: #0096d2;
+  border: 2px solid #fff;
+}
+
+.ui-widget-header {
+  background-color: #fff;
+}
+
+.ui-widget-content {
+  border: none;
 }
