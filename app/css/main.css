@@ -128,7 +128,8 @@ input:focus{
 }
 
 .year-slider {
-  background-color: #0096d2
+  background-color: #0096d2;
+  margin-top: 25px;
 }
 
 .ui-slider-horizontal {
@@ -149,4 +150,16 @@ input:focus{
 
 .ui-widget-content {
   border: none;
+}
+
+
+.selectize-control.single .selectize-input,
+.selectize-input input,
+.ui-select-choices.selectize-dropdown,
+.option.ui-select-choices-row-inner {
+  background : #333;
+  color: #fff;
+  border : none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
 }

@@ -1,3 +1,6 @@
+/*
+  Decode base-86 csv in list-of-obj form
+*/
 
 function decode(csv) {
 
