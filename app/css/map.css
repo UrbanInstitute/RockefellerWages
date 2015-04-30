@@ -11,3 +11,17 @@
   border-radius: 3px;
   background-color: #333;
 }
+
+.county-map-legend {
+  width: 100%;
+  display: inline-block;
+}
+
+.legend-text {
+  fill : #fff;
+  stroke : none;
+}
+
+.county-map-legend rect:hover {
+  cursor: pointer;
+}

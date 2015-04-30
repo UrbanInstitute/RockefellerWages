@@ -24,6 +24,7 @@ input:focus{
   border-radius: 3px;
   padding: 5px 10px;
   margin-left: 5px;
+  font-size: 12px;
   border : none;
 }
 
@@ -156,3 +157,14 @@ input:focus{
 .industry-select .selectize-input {
   font-size: 22px;
 }
+
+
+@media(min-width: 768px) {
+  .no-pad-right {
+    padding-right: 0px;
+  }
+  .no-pad-left {
+    padding-left: 0px;
+  }
+}
+

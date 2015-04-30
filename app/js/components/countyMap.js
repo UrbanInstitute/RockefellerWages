@@ -26,6 +26,10 @@ angular.module('wages')
       // watch year changes
       $scope.$watch('year', fill);
 
+      $scope.$watch('legendHover.color', function(color) {
+        color ? highlight(color) : fill();
+      });
+
 
       function draw() {
 
@@ -59,7 +63,7 @@ angular.module('wages')
             .attr('class', 'county-map-paths');
 
         if (data) {
-          fill($scope.year);
+          fill();
         }
 
         // initialize zoom based on dimensions
@@ -83,20 +87,28 @@ angular.module('wages')
           .style("stroke-width", 1 / s + "px");
       }
 
-      function fill(year) {
+      function fill() {
         var colorf = $scope.colorf;
+        var year = $scope.year;
         counties.attr('fill', function(d) {
           return data[d.id] ? colorf(data[d.id][year]) : "#777";
         });
       }
 
+      function highlight(color) {
+        counties.attr('fill', function() {
+          var fill = this.attributes.fill;
+          return (fill && (fill.value === color) ? color : "#777");
+        });
+      }
+
+
       function get(industry) {
         if ( !(industry && (industry.code !== undefined) ) ) return;
         var code = industry.code;
-        var year = $scope.year;
         d3.csv(genFilename(code, 'wages'), function(e, raw) {
           data = decode(raw);
-          fill($scope.year);
+          fill();
         });
       }
 
@@ -110,7 +122,8 @@ angular.module('wages')
         countyData : '=',
         industry : '=',
         year: '=',
-        colorf : '='
+        colorf : '=',
+        legendHover : '='
       }
     };
   });

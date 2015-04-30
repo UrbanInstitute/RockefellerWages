@@ -26,6 +26,8 @@ angular.module('wages', [
       .domain([0,1200])
       .range(colors);
 
+    $scope.legendHover = {color : null};
+
     // start model with default config
     $scope.year = 90;
 
@@ -57,6 +59,8 @@ angular.module('wages', [
 /*
   Extend angular module with components
 */
-require('./controllers/yearFormat');
-require('./controllers/propsFilter');
-require('./controllers/countyMap');
+require('./components/yearFormat');
+require('./components/propsFilter');
+require('./components/countyMap');
+require('./components/countyLegend');
+

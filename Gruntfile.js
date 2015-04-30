@@ -6,6 +6,9 @@ module.exports = function(grunt) {
 
     uglify: {
       main: {
+        options : {
+          screwIE8 : true
+        },
         files: {
           'dist/bundle.js': ['app/bundle.js'],
           'dist/bower.js': ['app/bower.js']
@@ -90,7 +93,7 @@ module.exports = function(grunt) {
       scripts : {
         "files" : [
           './app/js/*.js',
-          './app/js/controllers/*.js'
+          './app/js/**/*.js'
         ],
         "tasks" : ['browserify']
       },
@@ -147,8 +150,7 @@ module.exports = function(grunt) {
     'uglify',
     'cssmin',
     'copy',
-    'gh-pages',
-    'shell:rmDist'
+    'gh-pages'
   ]);
 
   grunt.registerTask('default', watch);

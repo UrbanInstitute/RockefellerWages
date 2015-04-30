@@ -61,10 +61,10 @@
       </div>
 
       <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-8 no-pad-left">
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, esse aperiam ipsam eos tenetur reprehenderit dolorem distinctio qui obcaecati quidem? Aperiam id odit ut at quod eligendi cupiditate eos accusamus molestiae placeat ab quae, minima officia saepe aliquam maxime quasi culpa vitae! Voluptatibus, at voluptatem, velit rem ipsum ipsa officia.</p>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-4 no-pad-right">
           <p>Category: {{category.selected.name}}</p>
           <ui-select ng-model="category.selected" 
                      theme="selectize" 
@@ -80,7 +80,7 @@
 
       <div class="row">
 
-        <div class="col-sm-7">
+        <div class="col-sm-7 no-pad-left">
           <p>Industry: {{industry.selected.name}}</p>
           <ui-select ng-model="industry.selected"
                      class="industry-select"
@@ -93,7 +93,7 @@
           </ui-select>
         </div>
 
-        <div class="col-sm-5">
+        <div class="col-sm-5 no-pad-right">
           <p>Year : {{ year | yearFormat }}</p>
           <div class="year-slider"
                ui-slider="{range: 'max'}"
@@ -121,24 +121,30 @@
 
         <div class="col-md-8 map-container">
           <div class="row">
-            <div county-legend></div>
-
-            <button class="btn btn-primary"
-                    ng-class="{selected : countySelect}"
-                    ng-click="countySelect=true">
-              SELECT COUNTIES
-            </button>
-            <button class="btn btn-primary"
-                    ng-class="{selected : !countySelect}"
-                    ng-click="countySelect=false">
-              PAN / ZOOM
-            </button>
+            <div class="col-md-8 no-pad-left">
+              <div county-legend 
+                   colorf="colorf"
+                   legend-hover="legendHover"></div>
+            </div>
+            <div class="col-md-4 no-pad-right">
+              <button class="btn btn-primary"
+                      ng-class="{selected : countySelect}"
+                      ng-click="countySelect=true">
+                SELECT COUNTIES
+              </button>
+              <button class="btn btn-primary"
+                      ng-class="{selected : !countySelect}"
+                      ng-click="countySelect=false">
+                PAN / ZOOM
+              </button>
+            </div>
 
           </div>
           <div class="row">
             <div county-map 
                  county-data="year" 
                  industry="industry.selected"
+                 legend-hover="legendHover"
                  colorf="colorf"
                  year="year"></div>
           </div>
