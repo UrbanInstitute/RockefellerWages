@@ -39,6 +39,8 @@ angular.module('wages', [
     $scope.industry = {selected : industries.detail[0]};
     $scope.industries = industries.detail;
 
+    $scope.mapData = {};
+
     $scope.$watch('category.selected', function(value) {
 
       if ( !(value && value.prefixes ) ) return;

@@ -107,7 +107,8 @@ angular.module('wages')
         if ( !(industry && (industry.code !== undefined) ) ) return;
         var code = industry.code;
         d3.csv(genFilename(code, 'wages'), function(e, raw) {
-          data = decode(raw);
+          $scope.mapData.data = data = decode(raw);
+          $scope.$apply();
           fill();
         });
       }
@@ -119,11 +120,11 @@ angular.module('wages')
       link : link,
       restrict : 'EA',
       scope : {
-        countyData : '=',
         industry : '=',
         year: '=',
         colorf : '=',
-        legendHover : '='
+        legendHover : '=',
+        mapData : '='
       }
     };
   });

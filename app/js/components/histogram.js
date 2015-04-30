@@ -7,12 +7,13 @@ angular.module('wages')
     function link($scope, $element, attrs) {
 
     }
+ 
 
     return {
       link : link,
       restrict : 'EA',
       scope : {
-        countyData : '=',
+        mapData : '=',
         industry : '=',
         year: '='
       }
