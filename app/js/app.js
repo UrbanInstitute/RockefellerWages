@@ -39,7 +39,7 @@ angular.module('wages', [
     $scope.industry = {selected : industries.detail[0]};
     $scope.industries = industries.detail;
 
-    $scope.mapData = {};
+    $scope.mapData = {data : null};
 
     $scope.$watch('category.selected', function(value) {
 
@@ -65,4 +65,4 @@ require('./components/yearFormat');
 require('./components/propsFilter');
 require('./components/countyMap');
 require('./components/countyLegend');
-
+require('./components/histogram');

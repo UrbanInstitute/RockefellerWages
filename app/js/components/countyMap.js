@@ -91,7 +91,7 @@ angular.module('wages')
         var colorf = $scope.colorf;
         var year = $scope.year;
         counties.attr('fill', function(d) {
-          return data[d.id] ? colorf(data[d.id][year]) : "#777";
+          return data && data[d.id] ? colorf(data[d.id][year]) : "#777";
         });
       }
 

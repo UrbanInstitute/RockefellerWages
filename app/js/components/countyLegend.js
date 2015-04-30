@@ -51,11 +51,13 @@ angular.module('wages')
             })
             .style('fill', function(d) {return d;});
 
+        var fmt = d3.format('$,');
+
         var text = svg.append('g').selectAll('text')
             .data(bins)
             .enter().append('text')
             .attr('class', 'legend-text')
-            .text(function(d){return d + "$";});
+            .text(fmt);
 
         text
           .attr('y', function(d, i) {
