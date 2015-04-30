@@ -16,7 +16,7 @@ def main(args):
     for row in reader:
       code = industry.match(row['industry_code'])
 
-      title = re.sub(r'^NAICS\s\d+\s', '', row['industry_title'])
+      title = re.sub(r'^NAICS\s\d+[-\d\d]?\s', '', row['industry_title'])
 
       if code:
         start, end = map(lambda x : int(x) if x else x, code.groups())

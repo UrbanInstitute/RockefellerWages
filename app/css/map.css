@@ -2,3 +2,12 @@
 .county-map-paths {
   stroke : #fff;
 }
+
+.county-map svg {
+  border-radius: 3px;
+}
+
+.county-map {
+  border-radius: 3px;
+  background-color: #333;
+}

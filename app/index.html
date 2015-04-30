@@ -66,7 +66,10 @@
         </div>
         <div class="col-sm-4">
           <p>Category: {{category.selected.name}}</p>
-          <ui-select ng-model="category.selected" theme="selectize" ng-disabled="disabled" style="width: 100%;" class="category-select">
+          <ui-select ng-model="category.selected" 
+                     theme="selectize" 
+                     style="width: 100%;" 
+                     class="category-select">
             <ui-select-match placeholder="Select an category in the list...">{{$select.selected.name}}</ui-select-match>
             <ui-select-choices repeat="category in categories | filter: $select.search">
               <span ng-bind-html="category.name | highlight: $select.search"></span>
@@ -79,7 +82,10 @@
 
         <div class="col-sm-7">
           <p>Industry: {{industry.selected.name}}</p>
-          <ui-select ng-model="industry.selected" theme="selectize" ng-disabled="disabled" style="width: 100%;">
+          <ui-select ng-model="industry.selected"
+                     class="industry-select"
+                     theme="selectize" 
+                     style="width: 100%;">
             <ui-select-match placeholder="Select an industry in the list...">{{$select.selected.name}}</ui-select-match>
             <ui-select-choices repeat="industry in industries | filter: $select.search">
               <span ng-bind-html="industry.name | highlight: $select.search"></span>
@@ -88,7 +94,7 @@
         </div>
 
         <div class="col-sm-5">
-          <p>Year : {{ year }}</p>
+          <p>Year : {{ year | yearFormat }}</p>
           <div class="year-slider"
                ui-slider="{range: 'max'}"
                min="1"
@@ -130,7 +136,11 @@
 
           </div>
           <div class="row">
-            <div county-map county-data="year" industry="industry.selected" year="year"></div>
+            <div county-map 
+                 county-data="year" 
+                 industry="industry.selected"
+                 colorf="colorf"
+                 year="year"></div>
           </div>
         </div>
 

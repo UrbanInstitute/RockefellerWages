@@ -18,10 +18,10 @@ input:focus{
 
 .btn-primary {
   font-weight: 300;
-  background-color: #777;
+  background-color: #333;
   color: #fff;
   float: right;
-  border-radius: 0px;
+  border-radius: 3px;
   padding: 5px 10px;
   margin-left: 5px;
   border : none;
@@ -44,18 +44,6 @@ input:focus{
   margin-bottom: 20px;
 }
 
-.industry-select-container {
-  height:100%;
-  border-collapse:collapse;
-  display : table;
-}
-
-.industry-select {
-  display : table-row;
-  vertical-align : bottom;
-  height : 1px;
-}
-
 .urban-header {
   display: inline-block;
   width: 100%;
@@ -67,7 +55,7 @@ input:focus{
   height: 48px;
 }
 
-.logo{
+.logo {
   display: inline;
 }
 
@@ -162,4 +150,9 @@ input:focus{
   border : none;
   box-shadow: none;
   -webkit-box-shadow: none;
+}
+
+
+.industry-select .selectize-input {
+  font-size: 22px;
 }

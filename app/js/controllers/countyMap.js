@@ -1,35 +1,16 @@
 'use strict';
 
 var us = require('../../json/us.json');
-var genFilename = require('../genFilename');
-var decode = require('../decode');
+var genFilename = require('../util/genFilename');
+var decode = require('../util/decode');
 var _ = require('lodash');
 var topology = topojson.feature(us, us.objects.counties).features;
 
 
-var colors = [
-  "#ff4f00",
-  "#ff8400",
-  "#fdb913",
-  "#ffd990",
-  "#ffebc4",
-  "#cfe3f5",
-  "#82c4e9",
-  "#1696d2",
-  "#0076bc",
-  "#1D4281"
-];
-
-var colorf = d3.scale.quantize()
-  .domain([0,700])
-  .range(colors);
-
 angular.module('wages')
   .directive('countyMap', function() {
 
-
     function link($scope, $element, attrs) {
-
 
       var svg;
       var data;
@@ -39,7 +20,7 @@ angular.module('wages')
       // initial render
       draw();
       // debounced responsive redraw
-      $(window).on('resize', _.debounce(draw, 300))
+      $(window).on('resize', _.debounce(draw, 300));
       // fill map on change of industry
       $scope.$watch('industry', get);
       // watch year changes
@@ -62,7 +43,7 @@ angular.module('wages')
 
         var path = d3.geo.path().projection(projection);
 
-        var container = d3.select(node);
+        var container = d3.select(node).classed('county-map', true);
 
         svg = container.html('').append('svg')
             .attr('width', width + margin.left + margin.right)
@@ -77,14 +58,36 @@ angular.module('wages')
             .attr('d', path)
             .attr('class', 'county-map-paths');
 
+        if (data) {
+          fill($scope.year);
+        }
+
+        // initialize zoom based on dimensions
+        var zoom = d3.behavior.zoom()
+          .center([width/2, height/2])
+          .scaleExtent([1,10])
+          .on("zoom", zoomed);
+
+        svg
+          .call(zoom)
+          .call(zoom.event);
 
       }
 
 
+      function zoomed() {
+        var s = d3.event.scale,
+            t = d3.event.translate;
+        counties
+          .attr("transform","translate("+ t +")scale("+ s +")")
+          .style("stroke-width", 1 / s + "px");
+      }
+
       function fill(year) {
+        var colorf = $scope.colorf;
         counties.attr('fill', function(d) {
           return data[d.id] ? colorf(data[d.id][year]) : "#777";
-        })
+        });
       }
 
       function get(industry) {
@@ -93,9 +96,8 @@ angular.module('wages')
         var year = $scope.year;
         d3.csv(genFilename(code, 'wages'), function(e, raw) {
           data = decode(raw);
-          console.log(data)
-          fill(5);
-        })
+          fill($scope.year);
+        });
       }
 
 
@@ -107,8 +109,8 @@ angular.module('wages')
       scope : {
         countyData : '=',
         industry : '=',
-        year: '='
+        year: '=',
+        colorf : '='
       }
-    }
-
+    };
   });

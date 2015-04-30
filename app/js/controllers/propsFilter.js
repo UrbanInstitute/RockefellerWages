@@ -29,5 +29,5 @@ angular.module('wages')
       }
 
       return out;
-    }
-  })
+    };
+  });

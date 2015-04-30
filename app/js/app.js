@@ -1,6 +1,5 @@
 'use strict';
 
-var defaults = require('../defaults.json');
 var industries = require('../json/industry_codes.json');
 
 angular.module('wages', [
@@ -10,17 +9,33 @@ angular.module('wages', [
   ])
   .controller('main', ['$scope', function($scope) {
 
+    var colors = $scope.colors = [
+      "#ff4f00",
+      "#ff8400",
+      "#fdb913",
+      "#ffd990",
+      "#ffebc4",
+      "#cfe3f5",
+      "#82c4e9",
+      "#1696d2",
+      "#0076bc",
+      "#1D4281"
+    ];
+
+    $scope.colorf = d3.scale.quantize()
+      .domain([0,1200])
+      .range(colors);
+
     // start model with default config
-    $scope = angular.extend($scope, defaults);
+    $scope.year = 90;
 
     // general categories of industry for general dropdown
-    $scope.category = {};
+    $scope.category = {selected : industries.general[0]};
     $scope.categories = industries.general;
 
     // more specific industries as a result of selecting general category
-    $scope.industry = {};
+    $scope.industry = {selected : industries.detail[0]};
     $scope.industries = industries.detail;
-
 
     $scope.$watch('category.selected', function(value) {
 
@@ -34,7 +49,14 @@ angular.module('wages', [
 
       $scope.industries = industries.detail.filter(match);
 
-    })
+    });
 
 
   }]);
+
+/*
+  Extend angular module with components
+*/
+require('./controllers/yearFormat');
+require('./controllers/propsFilter');
+require('./controllers/countyMap');
