@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
+var fmt = require('../utils/format.js');
 
 angular.module('wages')
   .directive('histogram', function() {
@@ -9,7 +10,6 @@ angular.module('wages')
 
       var rects;
       var node = $element.get(0);
-
       var x = d3.scale.linear();
 
       // debounced responsive redraw
@@ -28,7 +28,7 @@ angular.module('wages')
             return (fill && (fill.value === color) ? color : "#777");
           });
         } else {
-          rects.attr("fill", function(d) { return colorf(d.x); });
+          rects.attr("fill", function(d) { return colorf(d.x + 1); });
         }
       });
 
@@ -70,7 +70,7 @@ angular.module('wages')
         var xAxis = d3.svg.axis()
             .tickValues([0].concat(bins).concat(color_domain[1]))
             .scale(x)
-            .tickFormat(d3.format('$,'))
+            .tickFormat(fmt)
             .orient("bottom");
 
         var bar = svg.selectAll(".bar")
@@ -83,7 +83,7 @@ angular.module('wages')
             .attr("x", 1)
             .attr("width", x(data[0].dx) - 1)
             .attr("height", function(d) { return height - y(d.y); })
-            .attr("fill", function(d) { return colorf(d.x); });
+            .attr("fill", function(d) { return colorf(d.x + 1); });
 
         bar.append("text")
             .attr("dy", ".75em")
@@ -109,13 +109,6 @@ angular.module('wages')
             $scope.$apply();
           });
 
-      }
-
-      function highlight(color) {
-        rects.attr('fill', function() {
-          var fill = this.attributes.fill;
-          return (fill && (fill.value === color) ? color : "#777");
-        });
       }
 
     }

@@ -84,7 +84,7 @@ angular.module('wages')
             t = d3.event.translate;
         counties
           .attr("transform","translate("+ t +")scale("+ s +")")
-          .style("stroke-width", 1 / s + "px");
+          .style("stroke-width", 0.5*(1 / s) + "px");
       }
 
       function fill() {

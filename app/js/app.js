@@ -10,16 +10,13 @@ angular.module('wages', [
   .controller('main', ['$scope', function($scope) {
 
     var colors = $scope.colors = [
-      "#ff4f00",
-      "#ff8400",
-      "#fdb913",
-      "#ffd990",
-      "#ffebc4",
+      "#ffffff",
       "#cfe3f5",
       "#82c4e9",
       "#1696d2",
       "#0076bc",
-      "#1D4281"
+      "#00578b",
+      "#010F22"
     ];
 
     $scope.colorf = d3.scale.quantize()

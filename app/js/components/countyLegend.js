@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
+var fmt = require('../utils/format.js');
 
 angular.module('wages')
   .directive('countyLegend', function() {
@@ -51,7 +52,6 @@ angular.module('wages')
             })
             .style('fill', function(d) {return d;});
 
-        var fmt = d3.format('$,');
 
         var text = svg.append('g').selectAll('text')
             .data(bins)
