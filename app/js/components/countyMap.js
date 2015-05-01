@@ -41,9 +41,15 @@ angular.module('wages')
             width = bb.width - margin.left - margin.right,
             height = (bb.width*ratio) - margin.top - margin.bottom;
 
+        // slightly off center to allow for 
+        // better display of the aleutian islands
+        var center = [width/2*1.05, height/2];
+
+        var zoom_extent = [1, 10];
+
         var projection = d3.geo.albersUsa()
             .scale(width*1.2)
-            .translate([width/2, height/2]);
+            .translate(center);
 
         var path = d3.geo.path().projection(projection);
 
@@ -66,15 +72,60 @@ angular.module('wages')
           fill();
         }
 
+        // map control icons (fontawesome)
+        container.selectAll('i')
+          .data(['search-plus', 'search-minus', 'arrows-alt'])
+          .enter()
+          .append('i')
+          .attr('class', function(d) {
+            return 'map-control fa fa-' + d;
+          })
+          .style('top', function(d, i) {
+            return (10 + 30*i) + 'px';
+          });
+
+        // recenter map on click of reset button
+        container.select(".fa-arrows-alt")
+          .on('click', function(){
+            svg.transition()
+                  .duration(750)
+                  .call(zoom.translate([0,0]).scale(1).event);
+          });
+
+        // zoom in + out
+        container.selectAll(".fa-search-plus, .fa-search-minus")
+          .on('click', function(){
+            var zoomin = d3.select(this).classed('fa-search-plus');
+            zoomByFactor((zoomin ? 2 : (1/2)), 500);
+          });
+
+
         // initialize zoom based on dimensions
         var zoom = d3.behavior.zoom()
-          .center([width/2, height/2])
-          .scaleExtent([1,10])
+          .center(center)
+          .scaleExtent(zoom_extent)
           .on("zoom", zoomed);
 
         svg
           .call(zoom)
           .call(zoom.event);
+
+        // after hours of failing at figuring this out,
+        // taken from http://stackoverflow.com/a/21653008/1718488
+        function zoomByFactor(factor, dur) {
+          var scale = zoom.scale();
+          var ext = zoom_extent;
+          var newScale = Math.max(ext[0], Math.min(ext[1], scale*factor));
+          var t = zoom.translate();
+          var c = center;
+          zoom
+            .scale(newScale)
+            .translate([
+              c[0] + (t[0] - c[0]) / scale * newScale,
+              c[1] + (t[1] - c[1]) / scale * newScale
+            ])
+            .event(svg.transition().duration(dur || 200));
+        }
 
       }
 

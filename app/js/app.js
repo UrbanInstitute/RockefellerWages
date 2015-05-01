@@ -48,7 +48,12 @@ angular.module('wages', [
         return code_starts_with.test(d.code);
       };
 
-      $scope.industries = industries.detail.filter(match);
+      var filtered = industries.detail.filter(match);
+
+      // set industry dropdown to filtered industries,
+      // select first of the filtered industries initially
+      $scope.industries = filtered;
+      $scope.industry = {selected : filtered[0]};
 
     });
 

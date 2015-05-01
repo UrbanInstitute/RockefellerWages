@@ -7,7 +7,7 @@
 .histogram text {
   stroke : none;
   fill : #fff;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .histogram .axis path, 

@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
-var fmt = require('../utils/format.js');
+var fmt = require('../util/format.js');
 
 angular.module('wages')
   .directive('countyLegend', function() {

@@ -16,6 +16,12 @@ input:focus{
     outline: 0;
 }
 
+label.title {
+  font-weight: normal;
+  text-align: center;
+  width: 100%;
+}
+
 .btn-primary {
   font-weight: 300;
   background-color: #333;
@@ -141,7 +147,6 @@ input:focus{
   border: none;
 }
 
-
 .selectize-control.single .selectize-input,
 .selectize-input input,
 .ui-select-choices.selectize-dropdown,
@@ -153,6 +158,9 @@ input:focus{
   -webkit-box-shadow: none;
 }
 
+.ui-select-choices.selectize-dropdown {
+  z-index: 11;
+}
 
 .industry-select .selectize-input {
   font-size: 22px;

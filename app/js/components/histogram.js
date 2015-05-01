@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
-var fmt = require('../utils/format.js');
+var fmt = require('../util/format.js');
 
 angular.module('wages')
   .directive('histogram', function() {
@@ -49,7 +49,7 @@ angular.module('wages')
         var container = d3.select(node).html('')
           .classed('histogram', true);
 
-        var margin = {top: 30, right: 30, bottom: 30, left: 30},
+        var margin = {top: 30, right: 20, bottom: 30, left: 20},
             width = bb.width - margin.left - margin.right,
             height = bb.height - margin.top - margin.bottom;
 
