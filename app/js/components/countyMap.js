@@ -1,14 +1,19 @@
 'use strict';
 
-var us = require('../../json/us.json');
-var genFilename = require('../util/genFilename');
-var decode = require('../util/decode');
 var _ = require('lodash');
+var us = require('../../json/us.json');
+var decode = require('../util/decode');
+var fmt = require('../util/format');
+var genFilename = require('../util/genFilename');
+var county_names = require('../../json/county-names.json');
+
 var topology = topojson.feature(us, us.objects.counties).features;
 
 
 angular.module('wages')
-  .directive('countyMap', function() {
+  .directive('countyMap', ['$filter', function($filter) {
+
+    var yearFormat = $filter('yearFormat');
 
     function link($scope, $element, attrs) {
 
@@ -16,6 +21,7 @@ angular.module('wages')
       var data;
       var counties;
       var node = $element.get(0);
+      var tooltip = $scope.tooltip;
 
       // initial render
       draw();
@@ -29,6 +35,8 @@ angular.module('wages')
       $scope.$watch('legendHover.color', function(color) {
         color ? highlight(color) : fill();
       });
+
+      var zeros = d3.format("05d");
 
 
       function draw() {
@@ -67,6 +75,21 @@ angular.module('wages')
           .enter().append('path')
             .attr('d', path)
             .attr('class', 'county-map-paths');
+
+        counties
+          .on('mouseover', function(d) {
+            var year = $scope.year;
+            var id = zeros(d.id);
+            tooltip
+              .text({
+                "title" : county_names[id],
+                "value" : yearFormat(year) + ": " + fmt(data[d.id][year])
+              })
+              .position(this);
+          })
+          .on('mouseout', function() {
+            tooltip.position();
+          });
 
         if (data) {
           fill();
@@ -175,7 +198,8 @@ angular.module('wages')
         year: '=',
         colorf : '=',
         legendHover : '=',
-        mapData : '='
+        mapData : '=',
+        tooltip : '='
       }
     };
-  });
+  }]);

@@ -1,6 +1,7 @@
 'use strict';
 
 var industries = require('../json/industry_codes.json');
+var tooltipFactory = require('./util/tooltip');
 
 angular.module('wages', [
     'ngSanitize',
@@ -8,6 +9,11 @@ angular.module('wages', [
     'ui.slider'
   ])
   .controller('main', ['$scope', function($scope) {
+
+    var tooltip = $scope.tooltip = tooltipFactory();
+
+    // hide tooltip initially
+    tooltip.position();
 
     var colors = $scope.colors = [
       "#ffffff",
@@ -68,3 +74,4 @@ require('./components/propsFilter');
 require('./components/countyMap');
 require('./components/countyLegend');
 require('./components/histogram');
+require('./components/lineChart');

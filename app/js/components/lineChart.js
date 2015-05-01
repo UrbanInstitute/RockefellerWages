@@ -7,15 +7,23 @@ angular.module('wages')
 
     function link($scope, $element, attrs) {
 
+      var node = $element.get(0);
+
+      $(window).on('resize', _.debounce(draw, 300));
+
+      function draw() {
+
+      }
+
     }
 
     return {
       link : link,
       restrict : 'EA',
       scope : {
-        countyData : '=',
-        industry : '=',
+        mapData : '=',
         year: '='
       }
     };
+
   });

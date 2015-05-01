@@ -45,7 +45,9 @@ angular.module('wages')
             .data(colors)
             .enter().append('rect')
             .attr('width', bin_width)
-            .attr('height', 20)
+            .attr('height', 15)
+            .attr('rx', 3)
+            .attr('ry', 3)
             .attr('y', 20)
             .attr('x', function(d, i) {
               return i*bin_width;

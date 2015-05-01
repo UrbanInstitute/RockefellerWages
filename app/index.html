@@ -94,7 +94,7 @@
         </div>
 
         <div class="col-sm-5 no-pad-right">
-          <p>Year : {{ year | yearFormat }}</p>
+          <p>Select Quarter</p>
           <div class="year-slider"
                ui-slider="{range: 'max'}"
                min="1"
@@ -119,40 +119,25 @@
           </div>
           <div class="row">
             <div class="col-sm-12">
-              <div time-series></div>
+              <div line-chart
+                   year="year"
+                   map-data="mapData"></div>
             </div>
           </div>
         </div>
 
-        <div class="col-md-8 map-container">
-          <div class="row">
-            <div class="col-md-8 no-pad-left">
-              <div county-legend 
-                   colorf="colorf"
-                   legend-hover="legendHover"></div>
-            </div>
-            <div class="col-md-4 no-pad-right">
-<!--               <button class="btn btn-primary"
-                      ng-class="{selected : countySelect}"
-                      ng-click="countySelect=true">
-                SELECT COUNTIES
-              </button>
-              <button class="btn btn-primary"
-                      ng-class="{selected : !countySelect}"
-                      ng-click="countySelect=false">
-                PAN / ZOOM
-              </button> -->
-            </div>
-
-          </div>
-          <div class="row">
-            <div county-map 
-                 map-data="mapData"
-                 industry="industry.selected"
-                 legend-hover="legendHover"
-                 colorf="colorf"
-                 year="year"></div>
-          </div>
+        <div class="col-md-8 map-container no-pad-right">
+          <label class="title">Counties in {{ year | yearFormat }}</label>
+          <div county-legend 
+               colorf="colorf"
+               legend-hover="legendHover"></div>
+          <div county-map 
+               map-data="mapData"
+               industry="industry.selected"
+               legend-hover="legendHover"
+               colorf="colorf"
+               tooltip="tooltip"
+               year="year"></div>
         </div>
 
       </div>
@@ -160,6 +145,10 @@
     </div>
   </div>
 
+  <div id="tooltip">
+    <span class="title">test</span>
+    <span class="value">test</span>
+  </div>
 
 </body>
 </html>

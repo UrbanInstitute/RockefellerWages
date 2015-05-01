@@ -124,7 +124,6 @@ label.title {
 
 .year-slider {
   background-color: #0096d2;
-  margin-top: 25px;
 }
 
 .ui-slider-horizontal {
@@ -137,6 +136,7 @@ label.title {
   border-radius: 20px;
   background-color: #0096d2;
   border: 2px solid #fff;
+  cursor: pointer;
 }
 
 .ui-widget-header {
