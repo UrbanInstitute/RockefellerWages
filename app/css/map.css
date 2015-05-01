@@ -3,6 +3,11 @@
   stroke : #fff;
 }
 
+.county-map-paths:hover {
+  stroke : #000;
+  cursor: pointer;
+}
+
 .county-map svg {
   border-radius: 3px;
 }

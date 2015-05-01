@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var fmt = require('../util/format.js');
+var responsive = require('../util/responsive');
 
 angular.module('wages')
   .directive('histogram', function() {
@@ -13,9 +14,9 @@ angular.module('wages')
       var x = d3.scale.linear();
 
       // debounced responsive redraw
-      $(window).on('resize', _.debounce(function() { 
+      responsive(function() { 
         draw($scope.mapData.data);
-      }, 300));
+      });
 
       $scope.$watch('year', function() { draw($scope.mapData.data); });
       $scope.$watch('mapData.data', draw);
@@ -101,14 +102,15 @@ angular.module('wages')
 
         rects
           .on('mouseover', function() {
-            $scope.legendHover.color = d3.rgb(
-              d3.select(this).style('fill')
-            ).toString();
-            $scope.$apply();
+            var fill = d3.select(this).style('fill');
+            $scope.$apply(function() {
+              $scope.legendHover.color = d3.rgb(fill).toString();
+            });
           })
           .on('mouseout', function() {
-            $scope.legendHover.color = null;
-            $scope.$apply();
+            $scope.$apply(function() {
+              $scope.legendHover.color = null;
+            });
           });
 
       }

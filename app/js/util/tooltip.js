@@ -13,10 +13,8 @@ function tooltip() {
   // center tooltip above svg node
   function position(node, no_transition) {
 
-    var x, y, ctm, c_Y, c_X,
-        scrollTop, svg, p, width,
-        nw, nx, svgw, svgh,
-        tt_bb, svg_bb, node_bb,
+    var x, y, scrollTop, width,
+        tt_bb, node_bb,
         node_width, node_heigth;
 
     if (node) {
@@ -24,8 +22,6 @@ function tooltip() {
       scrollTop = $win.scrollTop();
       node_bb = node.getBoundingClientRect();
       tt_bb = tt.node().getBoundingClientRect();
-      svg = $(node).parents('svg').get(0);
-      svg_bb = svg.getBoundingClientRect();
 
       x = (
         node_bb.left
@@ -55,9 +51,9 @@ function tooltip() {
     // if hiding / showing transition must
     // come before / after style
     if (no_transition) {
-      tt.style(pos).style('opacity', svg ? 1 : 0);
+      tt.style(pos).style('opacity', node ? 1 : 0);
     } else {
-      if (svg) {
+      if (node) {
         tt.style(pos)
           .style('opacity', 0)
           .transition()

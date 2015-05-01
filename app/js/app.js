@@ -3,6 +3,12 @@
 var industries = require('../json/industry_codes.json');
 var tooltipFactory = require('./util/tooltip');
 
+d3.selection.prototype.moveToFront = function() {
+    return this.each(function() {
+        this.parentNode.appendChild(this);
+    });
+};
+
 angular.module('wages', [
     'ngSanitize',
     'ui.select',
@@ -22,7 +28,7 @@ angular.module('wages', [
       "#1696d2",
       "#0076bc",
       "#00578b",
-      "#010F22"
+      "#010f22"
     ];
 
     $scope.colorf = d3.scale.quantize()

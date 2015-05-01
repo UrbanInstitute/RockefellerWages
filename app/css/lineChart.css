@@ -1,0 +1,23 @@
+.line-chart {
+  display: block;
+  width: 100%;
+  height: 200px;
+}
+
+.line-chart text {
+  stroke : none;
+  fill : #fff;
+  font-size: 11px;
+}
+
+.line-chart .axis path, 
+.line-chart .axis line {
+  fill: none;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+.line-chart .line {
+  stroke : #fff;
+  fill : none;
+}

@@ -1,6 +1,6 @@
 'use strict';
 
-var _ = require('lodash');
+var responsive = require('../util/responsive');
 var us = require('../../json/us.json');
 var decode = require('../util/decode');
 var fmt = require('../util/format');
@@ -26,7 +26,7 @@ angular.module('wages')
       // initial render
       draw();
       // debounced responsive redraw
-      $(window).on('resize', _.debounce(draw, 300));
+      responsive(draw);
       // fill map on change of industry
       $scope.$watch('industry', get);
       // watch year changes
@@ -80,9 +80,11 @@ angular.module('wages')
           .on('mouseover', function(d) {
             var year = $scope.year;
             var id = zeros(d.id);
+            var county = county_names[id];
+            d3.select(this).moveToFront();
             tooltip
               .text({
-                "title" : county_names[id],
+                "title" : county.name + ", " + county.state,
                 "value" : yearFormat(year) + ": " + fmt(data[d.id][year])
               })
               .position(this);
@@ -97,7 +99,7 @@ angular.module('wages')
 
         // map control icons (fontawesome)
         container.selectAll('i')
-          .data(['search-plus', 'search-minus', 'arrows-alt'])
+          .data(['search-plus', 'search-minus', 'home'])
           .enter()
           .append('i')
           .attr('class', function(d) {
@@ -108,7 +110,7 @@ angular.module('wages')
           });
 
         // recenter map on click of reset button
-        container.select(".fa-arrows-alt")
+        container.select(".fa-home")
           .on('click', function(){
             svg.transition()
                   .duration(750)
