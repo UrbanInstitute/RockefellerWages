@@ -26,11 +26,8 @@ module.exports = function(grunt) {
     },
 
     shell: {
-      makeDist: {
-        command: 'mkdir -p dist'
-      },
-      rmDist : {
-        command : 'rm -rf dist'
+      deploy : {
+        command : 'cd app/scripts && sh deploy.sh'
       }
     },
 
@@ -52,7 +49,7 @@ module.exports = function(grunt) {
       main: {
         files: [
           {src: 'app/index.html', dest: 'dist/index.html'},
-          {expand: true, src: ['app/images/**'], dest: 'dist/images/'},
+          {expand: true, cwd: 'app/images/', src: ['**'], dest: 'dist/images/'},
         ]
       }
     },
@@ -147,16 +144,19 @@ module.exports = function(grunt) {
     'watch'
   ]);
 
-  var deploy = prep.concat([
-    'shell:makeDist',
+  var build = prep.concat([
     'uglify',
     'cssmin',
-    'copy',
-    'gh-pages'
+    'copy'
   ]);
 
+  var deploy = build.concat([
+    'shell:deploy'
+  ]);
+
+
   grunt.registerTask('default', watch);
-  grunt.registerTask('build', prep);
+  grunt.registerTask('build', build);
   grunt.registerTask('deploy', deploy);
 
 };

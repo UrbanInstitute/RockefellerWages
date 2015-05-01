@@ -41,14 +41,13 @@ angular.module('wages')
         svg.style('width', width)
           .style('height', 40);
 
+        var bin_height = 10;
+
         var rects = svg.append('g').selectAll('rect')
             .data(colors)
             .enter().append('rect')
             .attr('width', bin_width)
-            .attr('height', 15)
-            .attr('rx', 3)
-            .attr('ry', 3)
-            .attr('y', 20)
+            .attr('height', bin_height)
             .attr('x', function(d, i) {
               return i*bin_width;
             })
@@ -64,7 +63,7 @@ angular.module('wages')
         text
           .attr('y', function(d, i) {
             var h = this.getBBox().height;
-            return h;
+            return bin_height + h;
           })
           .attr('x', function(d, i) {
               var w = this.getBBox().width;

@@ -81,8 +81,6 @@ angular.module('wages')
             .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
 
         rects = bar.append("rect")
-            .attr('rx', 3)
-            .attr('ry', 3)
             .attr("x", 1)
             .attr("width", x(data[0].dx) - 1)
             .attr("height", function(d) { return height - y(d.y); })
