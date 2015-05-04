@@ -10,7 +10,7 @@
   font-size: 11px;
 }
 
-.line-chart .axis path, 
+.line-chart .axis path,
 .line-chart .axis line {
   fill: none;
   stroke: #fff;
@@ -20,4 +20,12 @@
 .line-chart .line {
   stroke : #fff;
   fill : none;
+}
+
+.line-chart .line.county-line {
+  stroke : #0096d2;
+}
+
+line.hoverline {
+  stroke : #777;
 }

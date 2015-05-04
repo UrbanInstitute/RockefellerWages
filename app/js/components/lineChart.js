@@ -13,20 +13,33 @@ angular.module('wages')
 
       var node = $element.get(0);
 
+      var svg, yearLine, lineText, x;
+
       /*
         debounced responsive redraw
       */
       responsive(draw);
 
       $scope.$watch('mapData.data', draw);
+      $scope.$watch('countyHover.id', draw);
+      $scope.$watch('year', function(year) {
+        if (!yearLine) return;
 
-      function draw() {
+        yearLine
+          .attr('x1', x(year))
+          .attr('x2', x(year));
 
-        var data = $scope.mapData.data;
+        lineText
+          .attr('x', function() {
+            var bb = this.getBBox();
+            return x(year) - bb.width/2;
+          })
 
-        if (!data) return;
+      });
 
-        var values = d3.entries(data[0])
+
+      function getSeries(data, id) {
+        return d3.entries(data[Number(id)])
           .filter(function(d) { return !isNaN(Number(d.key)); })
           .map(function(d) {
             return {
@@ -34,6 +47,20 @@ angular.module('wages')
               value : Number(d.value)
             };
           });
+      }
+
+
+      function draw() {
+
+        var data = $scope.mapData.data;
+        var year = $scope.year;
+
+        if (!data) return;
+
+        var values = [getSeries(data, 0)];
+
+        var id = $scope.countyHover.id;
+        if (id) values.push(getSeries(data, id));
 
         var container = d3.select(node).html('')
           .classed('line-chart', true);
@@ -44,48 +71,70 @@ angular.module('wages')
             width = bb.width - margin.left - margin.right,
             height = bb.height - margin.top - margin.bottom;
 
-        var x = d3.scale.linear()
-            .domain(d3.extent(values, function(d) { return d.year; }))
+        var flat = _.flatten(values);
+
+        // declared in upper scope
+        x = d3.scale.linear()
+            .domain(d3.extent(flat, function(d) { return d.year; }))
             .range([0, width]);
 
         var y = d3.scale.linear()
-            .domain([0, d3.max(values, function(d) { return d.value; })])
+            .domain([0, 2000])
             .range([height, 0]);
 
         var xAxis = d3.svg.axis()
             .ticks(5)
             .scale(x)
             .tickFormat(yearFormat)
-            .orient("bottom");
+            .orient('bottom');
 
         var yAxis = d3.svg.axis()
             .tickFormat(fmt)
             .scale(y)
-            .orient("left");
+            .orient('left');
 
         var line = d3.svg.line()
             .x(function(d) { return x(d.year); })
             .y(function(d) { return y(d.value); });
 
-        var svg = container.append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-          .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
+        svg = container.append('svg')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom)
+          .append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+        svg.append('g')
+            .attr('class', 'x axis')
+            .attr('transform', 'translate(0,' + height + ')')
             .call(xAxis);
 
-        svg.append("g")
-            .attr("class", "y axis")
+        svg.append('g')
+            .attr('class', 'y axis')
             .call(yAxis);
 
-        svg.append("path")
-            .datum(values)
-            .attr("class", "line")
-            .attr("d", line);
+        svg.append('g').selectAll('path')
+            .data(values)
+          .enter().append('path')
+            .attr('class', 'line')
+            .classed('county-line', function(d, i) { return i; })
+            .attr('d', line);
+
+        yearLine = svg.append('line')
+          .attr('class', 'hoverline')
+          .attr('x1', x(year))
+          .attr('x2', x(year))
+          .attr('y1', 0)
+          .attr('y2', height)
+
+        lineText = svg.append('text')
+          .text("Map Display")
+          .attr('y', -5)
+          .attr('x', function() {
+            var bb = this.getBBox();
+            return x(year) - bb.width/2;
+          });
+
 
       }
 
@@ -96,6 +145,7 @@ angular.module('wages')
       restrict : 'EA',
       scope : {
         mapData : '=',
+        countyHover : '=',
         year: '='
       }
     };

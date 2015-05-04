@@ -18,9 +18,6 @@ angular.module('wages', [
 
     var tooltip = $scope.tooltip = tooltipFactory();
 
-    // hide tooltip initially
-    tooltip.position();
-
     var colors = $scope.colors = [
       "#ffffff",
       "#cfe3f5",
@@ -30,6 +27,9 @@ angular.module('wages', [
       "#00578b",
       "#010f22"
     ];
+
+    // hide tooltip initially
+    tooltip.hide();
 
     $scope.colorf = d3.scale.quantize()
       .domain([0,1200])
@@ -49,6 +49,7 @@ angular.module('wages', [
     $scope.industries = industries.detail;
 
     $scope.mapData = {data : null};
+    $scope.countyHover = {id : null};
 
     $scope.$watch('category.selected', function(value) {
 

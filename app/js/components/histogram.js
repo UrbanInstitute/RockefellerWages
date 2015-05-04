@@ -14,7 +14,7 @@ angular.module('wages')
       var x = d3.scale.linear();
 
       // debounced responsive redraw
-      responsive(function() { 
+      responsive(function() {
         draw($scope.mapData.data);
       });
 
@@ -96,7 +96,7 @@ angular.module('wages')
         svg.append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);        
+            .call(xAxis);
 
         rects
           .on('mouseover', function() {
@@ -114,7 +114,7 @@ angular.module('wages')
       }
 
     }
- 
+
 
     return {
       link : link,

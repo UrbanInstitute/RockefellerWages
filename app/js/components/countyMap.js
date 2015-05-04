@@ -49,7 +49,7 @@ angular.module('wages')
             width = bb.width - margin.left - margin.right,
             height = (bb.width*ratio) - margin.top - margin.bottom;
 
-        // slightly off center to allow for 
+        // slightly off center to allow for
         // better display of the aleutian islands
         var center = [width/2*1.05, height/2];
 
@@ -81,6 +81,9 @@ angular.module('wages')
             var year = $scope.year;
             var id = zeros(d.id);
             var county = county_names[id];
+
+            $scope.$apply(function() { $scope.countyHover.id = id; });
+
             d3.select(this).moveToFront();
             tooltip
               .text({
@@ -90,7 +93,8 @@ angular.module('wages')
               .position(this);
           })
           .on('mouseout', function() {
-            tooltip.position();
+            tooltip.hide();
+            $scope.$apply(function() { $scope.countyHover.id = null; });
           });
 
         if (data) {
@@ -200,8 +204,10 @@ angular.module('wages')
         year: '=',
         colorf : '=',
         legendHover : '=',
+        countyHover : '=',
         mapData : '=',
         tooltip : '='
       }
     };
+
   }]);
