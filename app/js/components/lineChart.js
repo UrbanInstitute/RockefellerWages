@@ -14,9 +14,14 @@ angular.module('wages')
 
       var node = $element.get(0);
 
-      var svg, yearLine, lineText, x, width;
+      var svg, yearLine, lineText, x, data, line,
+          width, lineContainer, countyLineContainer, 
+          countyLegendContainer;
 
       var zeros = d3.format("05d");
+
+      var legend_height = 15;
+      var legend_line_width = 25;
 
       /*
         debounced responsive redraw
@@ -24,7 +29,7 @@ angular.module('wages')
       responsive(draw);
 
       $scope.$watch('mapData.data', draw);
-      $scope.$watch('countyHover.id', draw);
+      $scope.$watch('countyHover.id', drawCountyLine);
       $scope.$watch('year', function(year) {
         if (!yearLine) return;
 
@@ -40,8 +45,8 @@ angular.module('wages')
               Math.max(
                 x(year) - w/2, 0
               ), (width - w)
-            )
-          })
+            );
+          });
 
       });
 
@@ -63,19 +68,18 @@ angular.module('wages')
 
       function draw() {
 
-        var data = $scope.mapData.data;
+        data = $scope.mapData.data;
         var year = $scope.year;
 
         if (!data) return;
 
         // start with US line
-        var values = [getSeries(data, 0)];
+        var nationalSeries = getSeries(data, 0);
 
-        var id = $scope.countyHover.id;
-        if (id) values.push(getSeries(data, id));
-
-        var container = d3.select(node).html('')
+        var container = d3.select(node)
           .classed('line-chart', true);
+
+        container.select('svg').remove();
 
         var bb = node.getBoundingClientRect();
 
@@ -84,11 +88,13 @@ angular.module('wages')
 
         width = bb.width - margin.left - margin.right;
 
-        var flat = _.flatten(_.pluck(values, 'values'));
-
         // declared in upper scope
         x = d3.scale.linear()
-            .domain(d3.extent(flat, function(d) { return d.year; }))
+            .domain(d3.extent(
+                nationalSeries.values, 
+                function(d) { return d.year; }
+              )
+            )
             .range([0, width]);
 
         var y = d3.scale.linear()
@@ -108,7 +114,7 @@ angular.module('wages')
             .scale(y)
             .orient('left');
 
-        var line = d3.svg.line()
+        line = d3.svg.line()
             .x(function(d) { return x(d.year); })
             .y(function(d) { return y(d.value); });
 
@@ -144,45 +150,78 @@ angular.module('wages')
               Math.max(
                 x(year) - w/2, 0
               ), (width - w)
-            )
+            );
           });
 
-        var legend_height = 15;
-        var legend_line_width = 25;
 
-        var legend = svg.append('g').selectAll('g')
-            .data(values)
-          .enter().append('g')
-            .attr('transform', function(d, i) { return "translate(10," + i*legend_height + ")"; })
+        var legend = svg.append('g')
+            .attr('transform', "translate(10,0)");
+
+        countyLegendContainer = svg.append('g');
 
         legend.append('line')
           .attr('class', 'line legend-line')
-          .classed('county-line', function(d, i) { return i; })
           .attr('x1', 0)
           .attr('x2', legend_line_width)
           .attr('y1', -legend_height/4)
           .attr('y2', -legend_height/4);
 
         legend.append('text')
-          .text(function(d) {
-            if (d.id === 0) return "U.S.";
-            var county = county_names[zeros(d.id)];
+          .text("U.S.")
+          .attr('x', legend_line_width + 5)
+          .attr('y', function() {
+            var bb = this.getBBox();
+            return legend_height/2 - bb.height/2;
+          });
+
+        lineContainer = svg.append('g');
+
+        lineContainer.append('path')
+          .attr('class', 'line')
+          .attr('d', line(nationalSeries.values));
+
+        countyLineContainer = lineContainer.append('g');
+
+      }
+
+
+      function drawCountyLine(id) {
+
+        if (!countyLineContainer) return;
+
+        countyLineContainer.select('path').remove();
+        countyLegendContainer.select('g').remove();
+
+        if (!id) return;
+
+        var legend = countyLegendContainer.append('g')
+            .attr('transform', "translate(10," + legend_height + ")");
+
+        legend.append('line')
+          .attr('class', 'line legend-line county-line')
+          .attr('x1', 0)
+          .attr('x2', legend_line_width)
+          .attr('y1', -legend_height/4)
+          .attr('y2', -legend_height/4);
+
+        legend.append('text')
+          .text(function() {
+            var county = county_names[zeros(id)];
             return county.name + ", " + county.state;
           })
           .attr('x', legend_line_width + 5)
           .attr('y', function() {
             var bb = this.getBBox();
             return legend_height/2 - bb.height/2;
-          })
+          });
 
-        svg.append('g').selectAll('path')
-            .data(values)
-          .enter().append('path')
-            .attr('class', 'line')
-            .classed('county-line', function(d, i) { return i; })
-            .attr('d', function(d) { return line(d.values); });
+        countyLineContainer
+          .append('path')
+          .attr('class', 'line county-line')
+          .attr('d', line(getSeries(data, id).values));
 
       }
+
 
     }
 

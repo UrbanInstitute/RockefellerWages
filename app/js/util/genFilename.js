@@ -4,7 +4,6 @@ var names = {
 };
 
 function genFilename(industry, variable) {
-  console.log(industry)
   return "./data/compressed/IND_" + industry + "_VAR_" + names[variable] + '.csv';
 }
 

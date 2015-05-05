@@ -9,7 +9,7 @@ angular.module('wages')
 
     function link($scope, $element, attrs) {
 
-      var rects;
+      var rects, text, height, width, map_data, bar, y;
       var node = $element.get(0);
       var x = d3.scale.linear();
 
@@ -18,7 +18,7 @@ angular.module('wages')
         draw($scope.mapData.data);
       });
 
-      $scope.$watch('year', function() { draw($scope.mapData.data); });
+      $scope.$watch('year', size);
       $scope.$watch('mapData.data', draw);
 
       $scope.$watch('legendHover.color', function(color) {
@@ -33,7 +33,10 @@ angular.module('wages')
         }
       });
 
-      function draw(map_data) {
+
+      function draw() {
+
+        map_data = $scope.mapData.data;
 
         var colorf = $scope.colorf;
 
@@ -41,18 +44,28 @@ angular.module('wages')
         var bins = colorf.range()
             .map(function(c){ return colorf.invertExtent(c)[1]; });
 
+        var data = _.chain(map_data)
+          .pluck($scope.year)
+          .filter(function(d) {
+            return d !== 0;
+          })
+          .value();
+
         // generate histogram data from current year values
         var data = d3.layout.histogram()
-            .bins([0].concat(bins))(_.pluck(map_data, $scope.year));
+            .bins([0].concat(bins))(data);
 
         var bb = node.getBoundingClientRect();
 
-        var container = d3.select(node).html('')
+        var container = d3.select(node)
           .classed('histogram', true);
 
-        var margin = {top: 30, right: 20, bottom: 30, left: 20},
-            width = bb.width - margin.left - margin.right,
-            height = bb.height - margin.top - margin.bottom;
+        container.select('svg').remove();
+
+        var margin = {top: 30, right: 20, bottom: 30, left: 20};
+        
+        width = bb.width - margin.left - margin.right;
+        height = bb.height - margin.top - margin.bottom;
 
         var svg = container.append("svg")
             .attr("width", width + margin.left + margin.right)
@@ -64,7 +77,7 @@ angular.module('wages')
 
         x.domain(color_domain).range([0, width]);
 
-        var y = d3.scale.linear()
+        y = d3.scale.linear()
             .domain([0, d3.max(data, function(d) { return d.y; })])
             .range([height, 0]);
 
@@ -76,7 +89,7 @@ angular.module('wages')
             .tickFormat(fmt[variable])
             .orient("bottom");
 
-        var bar = svg.selectAll(".bar")
+        bar = svg.selectAll(".bar")
             .data(data)
           .enter().append("g")
             .attr("class", "bar")
@@ -88,7 +101,7 @@ angular.module('wages')
             .attr("height", function(d) { return height - y(d.y); })
             .attr("fill", function(d) { return colorf(d.x + 1); });
 
-        bar.append("text")
+        text = bar.append("text")
             .attr("dy", ".75em")
             .attr("y", -15)
             .attr("x", x(data[0].dx) / 2)
@@ -113,6 +126,35 @@ angular.module('wages')
             });
           });
 
+      }
+
+      function size() {
+
+        if (!bar) return;
+
+        var colorf = $scope.colorf;
+
+        // invert the color scale range to produce bins
+        var bins = colorf.range()
+            .map(function(c){ return colorf.invertExtent(c)[1]; });
+
+        // generate histogram data from current year values
+        var data = d3.layout.histogram()
+            .bins([0].concat(bins))(_.pluck(map_data, $scope.year));
+
+        y.domain([0, d3.max(data, function(d) { return d.y; })]);
+
+        bar.data(data)
+          .attr("transform", function(d) { 
+            return "translate(" + x(d.x) + "," + y(d.y) + ")"; 
+        });
+
+        bar.select("rect")
+            .attr("height", function(d) { return height - y(d.y); })
+            .attr("fill", function(d) { return colorf(d.x + 1); });
+
+        bar.select("text")
+            .text(function(d) { return d.y; });
       }
 
     }

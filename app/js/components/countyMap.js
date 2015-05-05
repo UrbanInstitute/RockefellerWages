@@ -62,7 +62,10 @@ angular.module('wages')
 
         var path = d3.geo.path().projection(projection);
 
-        var container = d3.select(node).classed('county-map', true);
+        var container = d3.select(node)
+          .classed('county-map', true);
+
+        container.select('svg').remove();
 
         svg = container.html('').append('svg')
             .attr('width', width + margin.left + margin.right)
@@ -174,7 +177,8 @@ angular.module('wages')
         var colorf = $scope.colorf;
         var year = $scope.year;
         counties.attr('fill', function(d) {
-          return data && data[d.id] ? colorf(data[d.id][year]) : "#777";
+          var df = data && data[d.id];
+          return df && df[year] !== 0 ? colorf(df[year]) : "#777";
         });
       }
 

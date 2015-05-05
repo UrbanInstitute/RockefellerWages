@@ -56,20 +56,7 @@
 
       <div class="row">
         <div class="col-sm-12 no-pad-left no-pad-right">
-          <h1>
-            <button class="btn btn-primary"
-                    ng-class='{"selected" : variable=="wages"}'
-                    ng-click='variable="wages"'>
-              Wages
-            </button>
-           and
-            <button class="btn btn-primary"
-                    ng-class='{"selected" : variable=="employment"}'
-                    ng-click='variable="employment"'>
-              Employment
-            </button>
-           Explorer
-          </h1>
+          <h1>Wages and Employment Explorer</h1>
         </div>
       </div>
 
@@ -78,6 +65,22 @@
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, esse aperiam ipsam eos tenetur reprehenderit dolorem distinctio qui obcaecati quidem? Aperiam id odit ut at quod eligendi cupiditate eos accusamus molestiae placeat ab quae, minima officia saepe aliquam maxime quasi culpa vitae! Voluptatibus, at voluptatem, velit rem ipsum ipsa officia.</p>
         </div>
         <div class="col-sm-4 no-pad-right">
+          <button class="btn btn-primary"
+                  ng-class='{"selected" : variable=="wages"}'
+                  ng-click='variable="wages"'>
+            Wages
+          </button>
+          <button class="btn btn-primary"
+                  ng-class='{"selected" : variable=="employment"}'
+                  ng-click='variable="employment"'>
+            Employment
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="col-sm-7 no-pad-left">
           <p>Category: {{category.selected.name}}</p>
           <ui-select ng-model="category.selected" 
                      theme="selectize" 
@@ -88,12 +91,6 @@
               <span ng-bind-html="category.name | highlight: $select.search"></span>
             </ui-select-choices>
           </ui-select>
-        </div>
-      </div>
-
-      <div class="row">
-
-        <div class="col-sm-7 no-pad-left">
           <p>Industry: {{industry.selected.name}}</p>
           <ui-select ng-model="industry.selected"
                      class="industry-select"
@@ -110,9 +107,12 @@
           <p>Select Quarter</p>
           <div class="year-slider"
                ui-slider="{range: 'max'}"
-               min="1"
-               max="95"
+               min="{{yearRange[0]}}"
+               max="{{yearRange[1]}}"
                ng-model="year"></div>
+          <div year-axis
+               year="year"
+               year-range="yearRange"></div>
         </div>
 
       </div>
@@ -122,7 +122,7 @@
         <div class="col-md-4">
           <div class="row">
             <div class="col-sm-12">
-              <label class="title">Nationwide Distribution</label>
+              <label class="title">Nationwide Distribution {{ year | yearFormat }}</label>
               <div histogram
                    map-data="mapData"
                    colorf="colorf"
@@ -167,8 +167,8 @@
   </div>
 
   <div id="tooltip">
-    <span class="title">test</span>
-    <span class="value">test</span>
+    <span class="title"></span>
+    <span class="value"></span>
   </div>
 
 </body>

@@ -20,7 +20,8 @@
 
 .county-map-legend {
   width: 100%;
-  display: inline-block;
+  height: 45px;
+  display: block;
 }
 
 .legend-text {

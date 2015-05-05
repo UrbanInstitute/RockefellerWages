@@ -35,18 +35,20 @@ angular.module('wages', [
     var colorf = $scope.colorf = d3.scale.quantize()
       .range(colors);
 
+    // quarters in slider 1 == 1990, Q1 | 95 == 2013, Q3
+    $scope.yearRange = [1, 95];
+
     $scope.$watch('variable', function(variable) {
       colorf.domain([0, variable == "wages" ? 1200 : 100000]);
     });
 
     $scope.variable = "wages";
 
-
     $scope.legendHover = {color : null};
     $scope.mapHover = {county : null};
 
     // start model with default config
-    $scope.year = 90;
+    $scope.year = $scope.yearRange[1];
 
     // general categories of industry for general dropdown
     $scope.category = {selected : industries.general[0]};
@@ -90,3 +92,4 @@ require('./components/countyMap');
 require('./components/countyLegend');
 require('./components/histogram');
 require('./components/lineChart');
+require('./components/yearAxis');

@@ -32,6 +32,7 @@ label.title {
   margin-left: 5px;
   font-size: inherit;
   border : none;
+  float: right;
 }
 
 .btn-primary.selected {
@@ -124,6 +125,24 @@ label.title {
 
 .year-slider {
   background-color: #0096d2;
+  padding: 0px 40px;
+}
+
+.year-axis {
+  display: block;
+  width: 100%;
+  height: 40px;
+  margin-left: -40px;
+}
+
+.year-axis .tick line {
+  stroke : #fff;
+}
+
+.year-axis text {
+  font-size: 11px;
+  stroke : none;
+  fill : #fff;
 }
 
 .ui-slider-horizontal {
@@ -160,10 +179,6 @@ label.title {
 
 .ui-select-choices.selectize-dropdown {
   z-index: 11;
-}
-
-.industry-select .selectize-input {
-  font-size: 22px;
 }
 
 
