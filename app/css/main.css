@@ -126,13 +126,14 @@ label.title {
 .year-slider {
   background-color: #0096d2;
   padding: 0px 40px;
+  margin-top: 40px;
 }
 
 .year-axis {
   display: block;
   width: 100%;
   height: 40px;
-  margin-left: -40px;
+  margin-bottom: 40px;
 }
 
 .year-axis .tick line {

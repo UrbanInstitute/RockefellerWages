@@ -9,7 +9,6 @@ var county_names = require('../../json/county-names.json');
 
 var topology = topojson.feature(us, us.objects.counties).features;
 
-
 angular.module('wages')
   .directive('countyMap', ['$filter', function($filter) {
 

@@ -17,7 +17,11 @@ angular.module('wages')
       var x = d3.scale.linear();
 
       // debounced responsive redraw
-      responsive(draw);
+      responsive(function() {
+        draw();
+        positionIndicator($scope.year);
+      });
+
       draw();
 
       $scope.$watch('year', positionIndicator);
@@ -31,9 +35,19 @@ angular.module('wages')
           .html('')
           .classed('year-axis', true);
 
+        var padding = {
+          horizontal : 80,
+          vertical : 100
+        };
+
+        container.style({
+          "margin-left" : -padding.horizontal/2 + "px",
+          "margin-top" : -padding.vertical/2 + "px"
+        });
+
         var bb = node.getBoundingClientRect();
-        var width = bb.width + 80;
-        var height = bb.height;
+        var width = bb.width + padding.horizontal;
+        var height = bb.height + padding.vertical;
         
         x.range([40, width-40])
           .domain(yearRange);
@@ -49,14 +63,14 @@ angular.module('wages')
           .enter().append('g')
             .attr('class', 'tick')
             .attr('transform', function(d) {
-              return "translate(" + x(d) + ",0)";
+              return "translate(" + x(d) + "," + padding.vertical/2 + ")";
             });
 
         ticks.append('line')
           .attr({
             x1 : 0,
             x2 : 0,
-            y1 : 0,
+            y1 : -5,
             y2 : 15
           });
 
@@ -85,14 +99,6 @@ angular.module('wages')
         var tick = indicator.append('g')
           .attr('class', 'tick')
           .attr('transform',  "translate(" + x(qtr) + ",0)");
-
-        tick.append('line')
-          .attr({
-            x1 : 0,
-            x2 : 0,
-            y1 : 0,
-            y2 : 15
-          });
 
         tick.append('text')
           .text(yearFormat(qtr))

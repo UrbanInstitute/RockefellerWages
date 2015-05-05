@@ -138,9 +138,16 @@ angular.module('wages')
         var bins = colorf.range()
             .map(function(c){ return colorf.invertExtent(c)[1]; });
 
+        var vals = _.chain(map_data)
+          .pluck($scope.year)
+          .filter(function(d) {
+            return d !== 0;
+          })
+          .value();
+
         // generate histogram data from current year values
         var data = d3.layout.histogram()
-            .bins([0].concat(bins))(_.pluck(map_data, $scope.year));
+            .bins([0].concat(bins))(vals);
 
         y.domain([0, d3.max(data, function(d) { return d.y; })]);
 
