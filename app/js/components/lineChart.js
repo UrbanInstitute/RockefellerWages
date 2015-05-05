@@ -96,7 +96,8 @@ angular.module('wages')
       restrict : 'EA',
       scope : {
         mapData : '=',
-        year: '='
+        year: '=',
+        mapHover : '='
       }
     };
 

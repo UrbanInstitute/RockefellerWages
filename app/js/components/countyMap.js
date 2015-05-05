@@ -201,7 +201,8 @@ angular.module('wages')
         colorf : '=',
         legendHover : '=',
         mapData : '=',
-        tooltip : '='
+        tooltip : '=',
+        mapHover : '='
       }
     };
   }]);

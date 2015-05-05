@@ -36,6 +36,7 @@ angular.module('wages', [
       .range(colors);
 
     $scope.legendHover = {color : null};
+    $scope.mapHover = {county : null};
 
     // start model with default config
     $scope.year = 90;

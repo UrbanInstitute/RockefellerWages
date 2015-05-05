@@ -27,7 +27,7 @@ module.exports = function(grunt) {
 
     shell: {
       deploy : {
-        command : 'cd app/scripts && sh deploy.sh'
+        command : 'cd app/scripts && sh deploy.sh && cd ../../'
       }
     },
 
