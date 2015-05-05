@@ -1,6 +1,6 @@
 'use strict';
 
-var fmt = require('../util/format.js');
+var fmt = require('../util/format');
 var responsive = require('../util/responsive');
 
 angular.module('wages')
@@ -11,6 +11,8 @@ angular.module('wages')
       var node = $element.get(0);
 
       draw();
+
+      $scope.$watch('variable', draw);
 
       // debounced responsive redraw
       responsive(draw);
@@ -54,11 +56,13 @@ angular.module('wages')
             .style('fill', function(d) {return d;});
 
 
+        var variable = $scope.variable;
+
         var text = svg.append('g').selectAll('text')
             .data(bins)
             .enter().append('text')
             .attr('class', 'legend-text')
-            .text(fmt);
+            .text(fmt[variable]);
 
         text
           .attr('y', function(d, i) {
@@ -93,7 +97,8 @@ angular.module('wages')
       restrict : 'EA',
       scope : {
         colorf : '=',
-        legendHover : '='
+        legendHover : '=',
+        variable : '='
       }
     };
 

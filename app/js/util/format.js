@@ -1,4 +1,7 @@
 /*
   consistent formatting function for dollar values
 */
-module.exports = d3.format('$,.0f');
+module.exports = {
+  "wages" : d3.format('$,.0f'),
+  "employment" : d3.format(",.0f")
+};

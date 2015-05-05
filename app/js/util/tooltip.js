@@ -5,7 +5,8 @@ function tooltip() {
 
   var self = {
     position: position,
-    text : text
+    text : text,
+    hide : position.bind(self, null)
   };
 
   var $win = $(window);

@@ -27,6 +27,7 @@ angular.module('wages')
       draw();
       // debounced responsive redraw
       responsive(draw);
+      $scope.$watch('variable', get);
       // fill map on change of industry
       $scope.$watch('industry', get);
       // watch year changes
@@ -49,7 +50,7 @@ angular.module('wages')
             width = bb.width - margin.left - margin.right,
             height = (bb.width*ratio) - margin.top - margin.bottom;
 
-        // slightly off center to allow for 
+        // slightly off center to allow for
         // better display of the aleutian islands
         var center = [width/2*1.05, height/2];
 
@@ -81,16 +82,22 @@ angular.module('wages')
             var year = $scope.year;
             var id = zeros(d.id);
             var county = county_names[id];
+
+            $scope.$apply(function() { $scope.countyHover.id = id; });
+
+            var variable = $scope.variable;
+
             d3.select(this).moveToFront();
             tooltip
               .text({
                 "title" : county.name + ", " + county.state,
-                "value" : yearFormat(year) + ": " + fmt(data[d.id][year])
+                "value" : yearFormat(year) + ": " + fmt[variable](data[d.id][year])
               })
               .position(this);
           })
           .on('mouseout', function() {
-            tooltip.position();
+            tooltip.hide();
+            $scope.$apply(function() { $scope.countyHover.id = null; });
           });
 
         if (data) {
@@ -179,10 +186,12 @@ angular.module('wages')
       }
 
 
-      function get(industry) {
+      function get() {
+        var industry = $scope.industry;
         if ( !(industry && (industry.code !== undefined) ) ) return;
         var code = industry.code;
-        d3.csv(genFilename(code, 'wages'), function(e, raw) {
+        var variable = $scope.variable;
+        d3.csv(genFilename(code, variable), function(e, raw) {
           $scope.mapData.data = data = decode(raw);
           $scope.$apply();
           fill();
@@ -196,13 +205,16 @@ angular.module('wages')
       link : link,
       restrict : 'EA',
       scope : {
+        variable : '=',
         industry : '=',
         year: '=',
         colorf : '=',
         legendHover : '=',
+        countyHover : '=',
         mapData : '=',
         tooltip : '=',
         mapHover : '='
       }
     };
+
   }]);

@@ -18,9 +18,6 @@ angular.module('wages', [
 
     var tooltip = $scope.tooltip = tooltipFactory();
 
-    // hide tooltip initially
-    tooltip.position();
-
     var colors = $scope.colors = [
       "#ffffff",
       "#cfe3f5",
@@ -31,9 +28,19 @@ angular.module('wages', [
       "#010f22"
     ];
 
-    $scope.colorf = d3.scale.quantize()
-      .domain([0,1200])
+    // hide tooltip initially
+    tooltip.hide();
+
+    // choropleth + legend color scale
+    var colorf = $scope.colorf = d3.scale.quantize()
       .range(colors);
+
+    $scope.$watch('variable', function(variable) {
+      colorf.domain([0, variable == "wages" ? 1200 : 100000]);
+    });
+
+    $scope.variable = "wages";
+
 
     $scope.legendHover = {color : null};
     $scope.mapHover = {county : null};
@@ -50,6 +57,7 @@ angular.module('wages', [
     $scope.industries = industries.detail;
 
     $scope.mapData = {data : null};
+    $scope.countyHover = {id : null};
 
     $scope.$watch('category.selected', function(value) {
 

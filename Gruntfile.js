@@ -64,7 +64,6 @@ module.exports = function(grunt) {
           'jquery',
           'jquery-ui',
           'bootstrap',
-          'font-awesome',
           'angular',
           'angular-route',
           'angular-ui-select',

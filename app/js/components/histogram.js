@@ -14,7 +14,7 @@ angular.module('wages')
       var x = d3.scale.linear();
 
       // debounced responsive redraw
-      responsive(function() { 
+      responsive(function() {
         draw($scope.mapData.data);
       });
 
@@ -68,10 +68,12 @@ angular.module('wages')
             .domain([0, d3.max(data, function(d) { return d.y; })])
             .range([height, 0]);
 
+        var variable = $scope.variable;
+
         var xAxis = d3.svg.axis()
             .tickValues([0].concat(bins).concat(color_domain[1]))
             .scale(x)
-            .tickFormat(fmt)
+            .tickFormat(fmt[variable])
             .orient("bottom");
 
         var bar = svg.selectAll(".bar")
@@ -96,7 +98,7 @@ angular.module('wages')
         svg.append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);        
+            .call(xAxis);
 
         rects
           .on('mouseover', function() {
@@ -114,12 +116,13 @@ angular.module('wages')
       }
 
     }
- 
+
 
     return {
       link : link,
       restrict : 'EA',
       scope : {
+        variable : '=',
         mapData : '=',
         year: '=',
         colorf : '=',
