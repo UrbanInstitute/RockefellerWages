@@ -55,8 +55,21 @@
     <div class="col-sm-12 col-md-10 col-md-offset-1">
 
       <div class="row">
-        <div class="col-sm-12">
-          <h1>Wage and Employment Explorer</h1>
+        <div class="col-sm-12 no-pad-left no-pad-right">
+          <h1>
+            <button class="btn btn-primary"
+                    ng-class='{"selected" : variable=="wages"}'
+                    ng-click='variable="wages"'>
+              Wages
+            </button>
+           and
+            <button class="btn btn-primary"
+                    ng-class='{"selected" : variable=="employment"}'
+                    ng-click='variable="employment"'>
+              Employment
+            </button>
+           Explorer
+          </h1>
         </div>
       </div>
 
@@ -114,6 +127,7 @@
                    map-data="mapData"
                    colorf="colorf"
                    legend-hover="legendHover"
+                   variable="variable"
                    year="year"></div>
             </div>
           </div>
@@ -123,6 +137,7 @@
               <div line-chart
                    county-hover="countyHover"
                    year="year"
+                   variable="variable"
                    map-data="mapData"></div>
             </div>
           </div>
@@ -132,8 +147,10 @@
           <label class="title">Counties in {{ year | yearFormat }}</label>
           <div county-legend
                colorf="colorf"
+               variable="variable"
                legend-hover="legendHover"></div>
           <div county-map
+               variable="variable"
                map-data="mapData"
                industry="industry.selected"
                legend-hover="legendHover"

@@ -10,6 +10,7 @@ html, body {
 
 h1 {
   font-weight: 300;
+  font-size: 22px;
 }
 
 input:focus{
@@ -26,11 +27,10 @@ label.title {
   font-weight: 300;
   background-color: #333;
   color: #fff;
-  float: right;
   border-radius: 3px;
   padding: 5px 10px;
   margin-left: 5px;
-  font-size: 12px;
+  font-size: inherit;
   border : none;
 }
 

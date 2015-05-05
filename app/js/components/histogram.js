@@ -68,10 +68,12 @@ angular.module('wages')
             .domain([0, d3.max(data, function(d) { return d.y; })])
             .range([height, 0]);
 
+        var variable = $scope.variable;
+
         var xAxis = d3.svg.axis()
             .tickValues([0].concat(bins).concat(color_domain[1]))
             .scale(x)
-            .tickFormat(fmt)
+            .tickFormat(fmt[variable])
             .orient("bottom");
 
         var bar = svg.selectAll(".bar")
@@ -120,6 +122,7 @@ angular.module('wages')
       link : link,
       restrict : 'EA',
       scope : {
+        variable : '=',
         mapData : '=',
         year: '=',
         colorf : '=',

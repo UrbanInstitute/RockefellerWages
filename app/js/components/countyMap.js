@@ -27,6 +27,7 @@ angular.module('wages')
       draw();
       // debounced responsive redraw
       responsive(draw);
+      $scope.$watch('variable', get);
       // fill map on change of industry
       $scope.$watch('industry', get);
       // watch year changes
@@ -84,11 +85,13 @@ angular.module('wages')
 
             $scope.$apply(function() { $scope.countyHover.id = id; });
 
+            var variable = $scope.variable;
+
             d3.select(this).moveToFront();
             tooltip
               .text({
                 "title" : county.name + ", " + county.state,
-                "value" : yearFormat(year) + ": " + fmt(data[d.id][year])
+                "value" : yearFormat(year) + ": " + fmt[variable](data[d.id][year])
               })
               .position(this);
           })
@@ -183,10 +186,12 @@ angular.module('wages')
       }
 
 
-      function get(industry) {
+      function get() {
+        var industry = $scope.industry;
         if ( !(industry && (industry.code !== undefined) ) ) return;
         var code = industry.code;
-        d3.csv(genFilename(code, 'wages'), function(e, raw) {
+        var variable = $scope.variable;
+        d3.csv(genFilename(code, variable), function(e, raw) {
           $scope.mapData.data = data = decode(raw);
           $scope.$apply();
           fill();
@@ -200,6 +205,7 @@ angular.module('wages')
       link : link,
       restrict : 'EA',
       scope : {
+        variable : '=',
         industry : '=',
         year: '=',
         colorf : '=',

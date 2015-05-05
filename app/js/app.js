@@ -31,9 +31,16 @@ angular.module('wages', [
     // hide tooltip initially
     tooltip.hide();
 
-    $scope.colorf = d3.scale.quantize()
-      .domain([0,1200])
+    // choropleth + legend color scale
+    var colorf = $scope.colorf = d3.scale.quantize()
       .range(colors);
+
+    $scope.$watch('variable', function(variable) {
+      colorf.domain([0, variable == "wages" ? 1200 : 100000]);
+    });
+
+    $scope.variable = "wages";
+
 
     $scope.legendHover = {color : null};
 
