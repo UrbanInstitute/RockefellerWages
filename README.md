@@ -16,11 +16,6 @@ sudo npm install -g bower
 bower install
 ```
 
-Change back to the project root directory...
-```shell
-cd ../ 
-```
-
 Get the current data from bacchus...
 ```shell
 grunt get-data

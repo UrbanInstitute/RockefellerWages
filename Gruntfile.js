@@ -183,8 +183,8 @@ module.exports = function(grunt) {
     'shell:deployData'
   ]);
   grunt.registerTask('update-data', [
-    'shell:getData',
     'shell:compressData'
   ]);
+  grunt.registerTask('get-data', ['shell:getData']);
 
 };
