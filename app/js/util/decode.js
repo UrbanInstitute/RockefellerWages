@@ -17,7 +17,6 @@ function decode(csv) {
   // decode all strings in each row
   csv.forEach(function(row) {
     var id = parse(row.id);
-    df[id] = {'selected' : true};
     for (var e in row) {
       if (e != "id") {
         var v = parse(row[e]);
