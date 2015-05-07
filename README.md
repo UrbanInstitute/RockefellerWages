@@ -1,5 +1,9 @@
 ## Visualizing wages and labor force patterns
 
+### Requirements
+
+This project requires [nodejs ~10.26](https://nodejs.org/) and python 2.7+ (available as `python` in the shell path). Additionally, comands executed below are assumed to be in a unix shell with standard utilities (if on OSX don't worry, if on Windows - try git bash).
+
 ### Installing and Building the project
 
 First clone the repo and install dependencies
