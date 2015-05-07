@@ -25,6 +25,6 @@
     "jquery-ui": "~1.11.4"
   },
   "resolutions": {
-    "jquery-ui": "~1.10.x"
+    "jquery-ui": "~1.11.4"
   }
 }
