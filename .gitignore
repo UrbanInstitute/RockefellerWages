@@ -1,6 +1,7 @@
 app/bundle.*
 app/bower.*
 app/data/*
+!app/data/county-names.csv
 .grunt/*
 dist/*
 bower_components/*

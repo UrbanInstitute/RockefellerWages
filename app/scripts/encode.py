@@ -16,6 +16,7 @@ import numpy as np
 #
 #
 class Encoder:
+
   def __init__( self,
                 alphabet='0123456789abcdefghijklmnopq\
                           rstuvwxyzABCDEFGHIJKLMNOPQR\
