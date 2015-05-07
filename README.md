@@ -10,6 +10,7 @@ First clone the repo and install dependencies
 ```shell
 git clone https://github.com/UI-Research/RockefellerWages.git
 cd RockefellerWages/
+npm cache clear
 npm install
 sudo npm install -g grunt-cli
 sudo npm install -g bower
