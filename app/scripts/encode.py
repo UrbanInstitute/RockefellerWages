@@ -8,7 +8,7 @@ import os
 import csv
 import json
 import pandas as pd
-
+import numpy as np
 
 #
 #
@@ -86,17 +86,42 @@ class Encoder:
 #
 def compressFile(path, filename, encoder):
   print("Compressing {}...".format(filename))
-  full_df = pd.read_csv(path + '/' + filename)
-  full_df = full_df[full_df['area_fips'].apply(lambda x: not (x[2:] == "999") )]
-  full_df['time'] = (full_df['year'] - 1990)*4 + full_df['qtr']
+  
+  variables = ('wage_adj', 'pop_pct')
+
+  full_df = pd.read_csv(path + '/' + filename, dtype=object)
+
+  if all(not np.isfinite(full_df[v].apply(float)).any() for v in variables):
+     return None
+
+  full_df = full_df[full_df['area_fips'].apply(lambda x: not (str(x)[2:] == "999") )]
+  full_df = full_df[full_df['year'] >= 2000]
+  full_df['time'] = (full_df['year'].apply(int) - 1990)*4 + full_df['qtr'].apply(int)
   full_df['id'] = full_df['area_fips'].apply(lambda x: x.replace("US", ""))
+
   industry = full_df['industry_code'].tolist()[0]
-  for variable in ('avg_wkly_wage', 'qtr_emp_lvl'):
+
+  for variable in variables:
     df = full_df[['time', 'id', variable]]
+    df[variable] = df[variable].apply(float)
+
+    # drop missing values
+    df = df[np.isfinite(df[variable])]
+    
+    # multiply the percentage by 1000 to store as int
+    if variable == 'pop_pct':
+      df[variable] = df[variable]*1000
+
+    # convert variable to int for compression 
+    df[variable] = df[variable].apply(int)
+
     df = df.pivot(index='id', columns='time', values=variable).fillna(0)
+    
     matrix = [['id'] + list(df.columns)] + list(df.itertuples())
+    
     encoder.compress(
-      matrix, output="{}/IND_{}_VAR_{}.csv".format(
+      matrix, 
+      output="{}/IND_{}_VAR_{}.csv".format(
         path.replace('raw', 'compressed'),
         industry,
         variable
@@ -111,13 +136,10 @@ def compressFile(path, filename, encoder):
 #
 def compressDirectory(path):
   encoder = Encoder()
-  key = {}
   for filename in os.listdir(path):
     s = filename
-    key[s.split(" ")[0].split("_")[1]] = s[s.find("(")+1:s.find(")")]
     compressFile(path, filename, encoder)
-  json.dump(key, open(path.replace('data/raw','')+'keys.json', 'w'))
 
 
 if __name__ == "__main__":
-  compressDirectory("D:/UrbanGit/LaborForce/app/data/raw")
+  compressDirectory("../data/raw")

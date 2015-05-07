@@ -1,18 +1,16 @@
 #!/usr/bin/env sh
 
-
 DEPLOY_PATH=$1
-TAR=dist.tar.gz
+TAR=data.tar.gz
 
-echo deploying production code to $DEPLOY_PATH
+echo deploying data to $DEPLOY_PATH
 
-cd ../../dist/
+cd ../
 echo creating tarball...
-tar czfP ../$TAR ./
+tar czfP ../$TAR ./data/
 echo copying tarball...
 mv ../$TAR $DEPLOY_PATH
 
 cd $DEPLOY_PATH
 echo unzipping tarball...
 tar -xzf $TAR
-rm $TAR

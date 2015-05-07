@@ -12,14 +12,17 @@ sudo npm install -g bower
 bower install
 ```
 
-Get the current data from bacchus (a zipped tar file)
+Change back to the project root directory...
 ```shell
-BACHUS_DATA=http://datatools.urban.org/features/bsouthga/rfdata/data.tar.gz
-curl --progress $BACHUS_DATA > ./data.tar.gz
-tar -xzf data.tar.gz
+cd ../ 
 ```
 
-Next, `grunt` to start a watch server
+Get the current data from bacchus...
+```shell
+grunt get-data
+```
+
+`grunt` to start a watch server
 ```shell
 grunt
 ```
@@ -34,11 +37,15 @@ This will minify all the javascript and css and copy over the code to bacchus (c
 
 ### Updating the data
 
-In order to be able to serve the large amount of data to the browser, the data must be compressed using a python script (`encode.py`). Additioanlly, once the new data is encoded, a json file containing the list of acceptable industry codes must be generated. This can be done by running the python file `gen_industry_json.py`. In full, the steps to generate the new data are...
+In order to be able to serve the large amount of data to the browser, the data must be compressed. Additioanlly, once the new data is encoded, a json file containing the list of acceptable industry codes must be generated. 
 
-- Copy the "raw" data into `app/data/raw/`
-- cd to `scripts`
-- run `python encode.py`
-- run `python gen_industry_json.py`
-- run `sh deploy_data.sh $DEPLOY_PATH` (where  $DEPLOY_PATH is the root folder of the project on bacchus)
+Once new raw data has been placed in `app/data/raw` run the task...
+```shell
+grunt update-data
+```
+This will compress the data into base 86 and generate the industry code json
 
+To deploy the data to the server, run the following task...
+```shell
+grunt deploy-data
+```

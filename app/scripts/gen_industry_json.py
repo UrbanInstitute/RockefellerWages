@@ -7,7 +7,7 @@ import os.path
 
 
 def filename(code):
-  return "../data/compressed/IND_" + code + "_VAR_avg_wkly_wage.csv"
+  return "../data/compressed/IND_" + code + "_VAR_wage_adj.csv"
 
 
 def main(args):
@@ -19,6 +19,7 @@ def main(args):
   with open('../data/industry_titles.csv') as incsv:
     reader = csv.DictReader(incsv)
     valid_prefixes = set()
+
     for row in reader:
       code = industry.match(row['industry_code'])
 
@@ -32,13 +33,15 @@ def main(args):
         c = row['industry_code']
         fname = filename(c)
         if len(c) <= 4 and os.path.isfile(fname):
+          if len(c) == 3:
+            title += " (Total)"
           valid_prefixes |= {c[:2]}
           out['detail'].append({"code" : c, "name" : title})
+
     out['general'] = filter(
       lambda x : any(c in valid_prefixes for c in x['prefixes']), 
       out['general']
     )
-    print(valid_prefixes)
 
   with open('../json/industry_codes.json', 'w') as outjson:
     json.dump(out, outjson)
