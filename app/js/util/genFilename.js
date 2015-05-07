@@ -1,6 +1,6 @@
 var names = {
-  "wages" : "avg_wkly_wage",
-  "employment" : "qtr_emp_lvl"
+  "wages" : "wage_adj",
+  "employment" : "pop_pct"
 };
 
 function genFilename(industry, variable) {

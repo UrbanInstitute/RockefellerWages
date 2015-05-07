@@ -2,6 +2,20 @@ module.exports = function(grunt) {
 
   require('load-grunt-tasks')(grunt);
 
+  var deploy_paths;
+
+  // cd to scripts directory and run shell script
+  function runScript(script, params) {
+    return 'cd app/scripts && sh ' + script + ' ' + (params || '') + ' && cd ../../';
+  }
+
+  if (/^win/.test(process.platform)) {
+    deploy_path = 'B:/bsouthga/rfdata/';
+  } else {
+    deploy_path = '/Volumes/Features/bsouthga/rfdata/';
+  }
+
+
   grunt.initConfig({
 
     uglify: {
@@ -27,10 +41,18 @@ module.exports = function(grunt) {
 
     shell: {
       deploy : {
-        command : 'cd app/scripts && sh deploy.sh && cd ../../'
+        command : runScript('deploy.sh', deploy_path)
+      },
+      deployData : {
+        command : runScript('deploy_data.sh', deploy_path)
+      },
+      compressData : {
+        command : runScript('compress_data.sh')
+      },
+      getData : {
+        command : runScript('get_data.sh')
       }
     },
-
     'gh-pages': {
       options: {
         base: 'dist'
@@ -157,5 +179,12 @@ module.exports = function(grunt) {
   grunt.registerTask('default', watch);
   grunt.registerTask('build', build);
   grunt.registerTask('deploy', deploy);
+  grunt.registerTask('deploy-data', [
+    'shell:deployData'
+  ]);
+  grunt.registerTask('update-data', [
+    'shell:getData',
+    'shell:compressData'
+  ]);
 
 };

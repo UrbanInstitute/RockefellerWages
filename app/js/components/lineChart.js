@@ -65,16 +65,33 @@ angular.module('wages')
         };
       }
 
+      function cap(bounds) {
+        var a = bounds[0];
+        var b = bounds[1];
+        return function(x) {
+          var y = x.year;
+          return (y >= a) && (y <= b);
+        };
+      }
+
 
       function draw() {
 
         data = $scope.mapData.data;
         var year = $scope.year;
+        var colorf = $scope.colorf;
+        var yearRange = $scope.yearRange;
 
         if (!data) return;
 
+        // check if national series exists
+        var us_series = !!data[0];
+
         // start with US line
-        var nationalSeries = getSeries(data, 0);
+        var nationalSeries;
+        if (us_series) {
+          nationalSeries = getSeries(data, 0);
+        }
 
         var container = d3.select(node)
           .classed('line-chart', true);
@@ -90,15 +107,11 @@ angular.module('wages')
 
         // declared in upper scope
         x = d3.scale.linear()
-            .domain(d3.extent(
-                nationalSeries.values, 
-                function(d) { return d.year; }
-              )
-            )
+            .domain(yearRange)
             .range([0, width]);
 
         var y = d3.scale.linear()
-            .domain([0, 2000])
+            .domain([0, colorf.domain()[1]*1.5])
             .range([height, 0]);
 
         var xAxis = d3.svg.axis()
@@ -158,27 +171,31 @@ angular.module('wages')
             .attr('transform', "translate(10,0)");
 
         countyLegendContainer = svg.append('g');
-
-        legend.append('line')
-          .attr('class', 'line legend-line')
-          .attr('x1', 0)
-          .attr('x2', legend_line_width)
-          .attr('y1', -legend_height/4)
-          .attr('y2', -legend_height/4);
-
-        legend.append('text')
-          .text("U.S.")
-          .attr('x', legend_line_width + 5)
-          .attr('y', function() {
-            var bb = this.getBBox();
-            return legend_height/2 - bb.height/2;
-          });
-
         lineContainer = svg.append('g');
 
-        lineContainer.append('path')
-          .attr('class', 'line')
-          .attr('d', line(nationalSeries.values));
+        var values;
+        if (us_series) {
+
+          legend.append('line')
+            .attr('class', 'line legend-line')
+            .attr('x1', 0)
+            .attr('x2', legend_line_width)
+            .attr('y1', -legend_height/4)
+            .attr('y2', -legend_height/4);
+
+          legend.append('text')
+            .text("U.S.")
+            .attr('x', legend_line_width + 5)
+            .attr('y', function() {
+              var bb = this.getBBox();
+              return legend_height/2 - bb.height/2;
+            });
+
+          values = nationalSeries.values.filter(cap(yearRange));
+          lineContainer.append('path')
+            .attr('class', 'line')
+            .attr('d', line(values));        
+        }
 
         countyLineContainer = lineContainer.append('g');
 
@@ -193,6 +210,8 @@ angular.module('wages')
         countyLegendContainer.select('g').remove();
 
         if (!id) return;
+
+        var yearRange = $scope.yearRange;
 
         var legend = countyLegendContainer.append('g')
             .attr('transform', "translate(10," + legend_height + ")");
@@ -218,7 +237,7 @@ angular.module('wages')
         countyLineContainer
           .append('path')
           .attr('class', 'line county-line')
-          .attr('d', line(getSeries(data, id).values));
+          .attr('d', line(getSeries(data, id).values.filter(cap(yearRange))));
 
       }
 
@@ -232,7 +251,9 @@ angular.module('wages')
         variable : '=',
         mapData : '=',
         year: '=',
-        countyHover : '='
+        yearRange : '=',
+        countyHover : '=',
+        colorf : '='
       }
     };
 

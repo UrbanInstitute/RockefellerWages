@@ -133,18 +133,20 @@
           </div>
           <div class="row">
             <div class="col-sm-12">
-              <label class="title">Wages Over Time</label>
+              <label class="title">{{variableDescription}} Over Time</label>
               <div line-chart
                    county-hover="countyHover"
                    year="year"
+                   year-range="yearRange"
                    variable="variable"
+                   colorf="colorf"
                    map-data="mapData"></div>
             </div>
           </div>
         </div>
 
         <div class="col-md-8 map-container no-pad-right">
-          <label class="title">Counties in {{ year | yearFormat }}</label>
+          <label class="title">{{variableDescription}}, Counties in {{ year | yearFormat }}</label>
           <div county-legend
                colorf="colorf"
                variable="variable"

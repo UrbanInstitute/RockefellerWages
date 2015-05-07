@@ -35,11 +35,20 @@ angular.module('wages', [
     var colorf = $scope.colorf = d3.scale.quantize()
       .range(colors);
 
-    // quarters in slider 1 == 1990, Q1 | 95 == 2013, Q3
-    $scope.yearRange = [1, 95];
+    // quarters in slider 1 == 1990, 41 == 2000 Q1 | 95 == 2013, Q3
+    $scope.yearRange = [41, 95];
+
+    $scope.variableDescription = "";
 
     $scope.$watch('variable', function(variable) {
-      colorf.domain([0, variable == "wages" ? 1200 : 100000]);
+      colorf.domain([0, variable == "wages" ? 1200 : 400]);
+      if (variable === "wages") {
+        $scope.variableDescription = "Weekly Wages ($2014)";
+      } else if (variable === "employment") {
+        $scope.variableDescription = "Percent of County Employed in Industry";
+      } else {
+        throw new Error("Unknown variable type : " + variable);
+      }
     });
 
     $scope.variable = "wages";

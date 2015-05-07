@@ -182,8 +182,7 @@ label.title {
   z-index: 11;
 }
 body{
- background-color: #fff; 
-    overflow: hidden;
+  background-color: #fff; 
 }
 #content{
  width:100%;

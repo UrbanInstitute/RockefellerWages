@@ -5,3 +5,4 @@ app/data/*
 dist/*
 bower_components/*
 node_modules/*
+*.tar.gz

@@ -7,10 +7,10 @@ echo deploying data to $DEPLOY_PATH
 
 cd ../
 echo creating tarball...
-tar czfP ../$TAR ./data/
+tar czfP ../$TAR ./data/ --totals
 echo copying tarball...
 mv ../$TAR $DEPLOY_PATH
 
 cd $DEPLOY_PATH
 echo unzipping tarball...
-tar -xzf $TAR
+tar -xzf $TAR --totals 
