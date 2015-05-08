@@ -169,7 +169,7 @@ angular.module('wages')
             t = d3.event.translate;
         counties
           .attr("transform","translate("+ t +")scale("+ s +")")
-          .style("stroke-width", 0.5*(1 / s) + "px");
+          .style("stroke-width", 0.25*(1 / s) + "px");
       }
 
       function fill() {
@@ -177,14 +177,14 @@ angular.module('wages')
         var year = $scope.year;
         counties.attr('fill', function(d) {
           var df = data && data[d.id];
-          return df && df[year] !== 0 ? colorf(df[year]) : "#777";
+          return df && df[year] !== 0 ? colorf(df[year]) : "#ddd";
         });
       }
 
       function highlight(color) {
         counties.attr('fill', function() {
           var fill = this.attributes.fill;
-          return (fill && (fill.value === color) ? color : "#777");
+          return (fill && (fill.value === color) ? color : "#ddd");
         });
       }
 
