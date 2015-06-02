@@ -6,13 +6,13 @@
 
 .histogram text {
   stroke : none;
-  fill : #fff;
+  fill : #333;
   font-size: 11px;
 }
 
 .histogram .axis path, 
 .histogram .axis line {
   fill: none;
-  stroke: #fff;
+  stroke: #333;
   shape-rendering: crispEdges;
 }

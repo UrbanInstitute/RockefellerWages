@@ -19,7 +19,7 @@ angular.module('wages', [
     var tooltip = $scope.tooltip = tooltipFactory();
 
     var colors = $scope.colors = [
-      "#F7FAFD",
+      "#ecf5ff",
       "#cfe3f5",
       "#82c4e9",
       "#1696d2",

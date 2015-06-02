@@ -2,8 +2,8 @@
 html, body {
   width: 100%;
 /*  height: 100%;*/
-  background-color: #000;
-  color: #fff;
+  background-color: #fff;
+  color: #333;
   font-family: Lato;
   font-weight: 300;
     overflow-x: hidden;
@@ -47,6 +47,7 @@ label.title {
 
 #content {
   margin-top: 50px;
+    background-color: #fff;
 }
 
 .row {
@@ -138,13 +139,13 @@ label.title {
 }
 
 .year-axis .tick line {
-  stroke : #fff;
+  stroke : #333;
 }
 
 .year-axis text {
   font-size: 11px;
   stroke : none;
-  fill : #fff;
+  fill : #000;
 }
 
 .ui-slider-horizontal {
@@ -156,12 +157,12 @@ label.title {
   margin-left: -.6em;
   border-radius: 20px;
   background-color: #0096d2;
-  border: 2px solid #fff;
+  border: 2px solid #efefef;
   cursor: pointer;
 }
 
 .ui-widget-header {
-  background-color: #fff;
+  background-color: #000;
 }
 
 .ui-widget-content {
@@ -172,7 +173,7 @@ label.title {
 .selectize-input input,
 .ui-select-choices.selectize-dropdown,
 .option.ui-select-choices-row-inner {
-  background : #333;
+  background : #000;
   color: #fff;
   border : none;
   box-shadow: none;
@@ -184,18 +185,54 @@ label.title {
 }
 body{
   background-color: #fff; 
+    
 }
 #content{
  width:100%;
-    background-color:#000;
+    background-color:#efefef;
 }
 .graphic-row{
  margin-bottom: 0px;   
+    background-color: #fff;
 }
+.graphic-row:before{
+  content: '';
+  display: block;
+  position: absolute;
+  width: 2000em;
+  height: 100%;
+  max-height: 850px;
+  /* top: 0; */
+  right: -999em;
+  left: -999em;
+  background: #fff;
+}
+footer{
+ background-color: #000;   
+    z-index: 50;
+    width:100%;
+    color:#fff;
+}
+
+/*
+footer:before{
+      content: '';
+  display: block;
+  position: absolute;
+  width: 2000em;
+  height: 100%;
+  max-height: 550px;
+   top: 0; 
+  right: -999em;
+  left: -999em;
+  background: #000;
+    z-index: 0;
+}
+*/
+
 .footer-info{
  display: inline-block;
-    float: left;
-    background-color: #fff;
+   
 }
 .shiftLeft{
  margin-left: -187px;
@@ -209,19 +246,11 @@ body{
     padding-top:20px;
 }
 .map-container:before{
-  content: '';
-    display: block;
-    position: absolute;
-    width: 999em;
-    height:100%;
-    max-height: 850px;
-    top: 0;
-    bottom: -1000;
-    right: -999em;
-    background: #fff;
+
 }
 
 .chart-container:before{
+/*
   content: '';
   display: block;
   position: absolute;
@@ -230,7 +259,8 @@ body{
   top: 0;
   bottom: 0;
   right: 0;
-  background: #000;
+  background: #fff;
+*/
 }
 
 .btn-primary{
