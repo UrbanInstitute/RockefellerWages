@@ -51,6 +51,11 @@ angular.module('wages', [
       }
     });
 
+    // indent options without (Total) in name
+    $scope.indentIndustry = function(industry) {
+      return /\([T|t]otal\)/.test(industry.name) ? '' : 'indent-industry';
+    }
+
     $scope.variable = "wages";
 
     $scope.legendHover = {color : null};

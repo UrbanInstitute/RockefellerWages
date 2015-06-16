@@ -40,6 +40,10 @@ label.title {
   background-color: #0096d2;
 }
 
+.indent-industry {
+  padding-left: 20px;
+}
+
 #topNav {
   background-color: #000;
   border-bottom: 1px solid #fff;

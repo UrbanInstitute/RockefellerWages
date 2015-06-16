@@ -128,6 +128,7 @@ angular.module('wages')
             .orient('left');
 
         line = d3.svg.line()
+            .defined(function(d) { return d.value; })
             .x(function(d) { return x(d.year); })
             .y(function(d) { return y(d.value); });
 

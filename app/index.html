@@ -52,7 +52,7 @@
   <!-- END HEADER EXAMPLE -->
 
   <div class="container" id="content">
-    <div class="col-sm-12 col-md-10 col-md-offset-1">
+    <div class="col-sm-12 col-lg-10 col-lg-offset-1">
 
       <div class="row">
         <div class="col-sm-12 no-pad-left no-pad-right">
@@ -98,7 +98,7 @@
                      style="width: 100%;">
             <ui-select-match placeholder="Select an industry in the list...">{{$select.selected.name}}</ui-select-match>
             <ui-select-choices repeat="industry in industries | filter: $select.search">
-              <span ng-bind-html="industry.name | highlight: $select.search"></span>
+              <span class="{{indentIndustry(industry)}}" ng-bind-html="industry.name | highlight: $select.search"></span>
             </ui-select-choices>
           </ui-select>
         </div>
@@ -119,7 +119,7 @@
 
       <div class="row graphic-row">
 
-        <div class="col-md-4 chart-container">
+        <div class="col-lg-4 chart-container">
           <div class="row">
             <div class="col-sm-12">
               <label class="title">Nationwide Distribution {{ year | yearFormat }}</label>
@@ -145,7 +145,7 @@
           </div>
         </div>
 
-        <div class="col-md-8 map-container no-pad-right">
+        <div class="col-lg-8 map-container no-pad-right">
           <label class="title">{{variableDescription}}, Counties in {{ year | yearFormat }}</label>
           <div county-legend
                colorf="colorf"
