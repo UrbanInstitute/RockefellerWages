@@ -6,23 +6,19 @@
 
 .line-chart text {
   stroke : none;
-  fill : #fff;
+  fill : #333;
   font-size: 11px;
-}
-
-.line-char .axis text {
-  font-size: 10px;
 }
 
 .line-chart .axis path,
 .line-chart .axis line {
   fill: none;
-  stroke: #fff;
+  stroke: #333;
   shape-rendering: crispEdges;
 }
 
 .line-chart .line {
-  stroke : #fff;
+  stroke : #333;
   fill : none;
 }
 
@@ -35,6 +31,6 @@
 }
 
 line.hoverline {
-  stroke : #333;
-  stroke-width: 2px;
+  stroke : #666;
+  stroke-width: 1px;
 }

@@ -81,7 +81,7 @@
       <div class="row">
 
         <div class="col-sm-7 no-pad-left">
-          <p>Category: {{category.selected.name}}</p>
+          <h4>Category: {{category.selected.name}}</h4>
           <ui-select ng-model="category.selected" 
                      theme="selectize" 
                      style="width: 100%;" 
@@ -91,7 +91,7 @@
               <span ng-bind-html="category.name | highlight: $select.search"></span>
             </ui-select-choices>
           </ui-select>
-          <p>Industry: {{industry.selected.name}}</p>
+          <h4>Industry: {{industry.selected.name}}</h4>
           <ui-select ng-model="industry.selected"
                      class="industry-select"
                      theme="selectize" 
@@ -104,7 +104,7 @@
         </div>
 
         <div class="col-sm-5 no-pad-right">
-          <p>Select Quarter</p>
+          <h4>Select Quarter</h4>
           <div class="year-slider"
                ui-slider="{range: 'max'}"
                min="{{yearRange[0]}}"
@@ -173,8 +173,10 @@
                tooltip="tooltip"
                year="year"></div>
             
-            <img class="shiftLeft" src="images/urban_grid_white_rev.png"/> <p class="footer-info">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, esse aperiam ipsam eos tenetur reprehenderit dolorem distinctio qui obcaecati quidem? Aperiam id odit ut at quod eligendi cupiditate eos accusamus molestiae placeat ab quae, minima officia saepe aliquam maxime quasi culpa vitae! Voluptatibus, at voluptatem, velit rem ipsum ipsa officia.</p>
+            
         </div>
+          <div class="col-lg-12 footer" >
+          <img src="images/urban_grid_blue_trans.png" style="max-width:200px;"/> <p class="footer-info">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, esse aperiam ipsam eos tenetur reprehenderit dolorem distinctio qui obcaecati quidem? Aperiam id odit ut at quod eligendi cupiditate eos accusamus molestiae placeat ab quae, minima officia saepe aliquam maxime quasi culpa vitae! Voluptatibus, at voluptatem, velit rem ipsum ipsa officia.</p></div>
 
       </div>
 
