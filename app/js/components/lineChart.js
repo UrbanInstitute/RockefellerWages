@@ -12,14 +12,13 @@ angular.module('wages')
 
     function link($scope, $element, attrs) {
 
-      var node = $element.get(0);
 
       var svg, yearLine, lineText, x, data, line,
-          width, lineContainer, countyLineContainer, 
-          countyLegendContainer;
+          width, lineContainer, countyLineContainer,
+          countyLegendContainer, yAxisG, y, yAxis, colorf, usLine;
 
+      var node = $element.get(0);
       var zeros = d3.format("05d");
-
       var legend_height = 15;
       var legend_line_width = 25;
 
@@ -31,6 +30,7 @@ angular.module('wages')
       $scope.$watch('mapData.data', draw);
       $scope.$watch('countyHover.id', drawCountyLine);
       $scope.$watch('year', function(year) {
+
         if (!yearLine) return;
 
         yearLine
@@ -75,22 +75,45 @@ angular.module('wages')
       }
 
 
+      var avgCache; // memoize
+      function avgUS(data) {
+        if (avgCache) return avgCache;
+        var totals = {};
+        var tempSeries = {};
+        var laggedValue;
+        // running daily average of series
+        _.each(data, function(series) {
+          _.each(series, function(value, key) {
+            laggedValue = (tempSeries[key] || 0) * (totals[key] || 1)
+            totals[key] = (totals[key] || 0) + 1;
+            tempSeries[key] = (laggedValue + value) / totals[key];
+          })
+        })
+        var nationalSeries = {values : [], id: 0};
+        _.each(tempSeries, function(value, qtr) {
+          nationalSeries.values.push({value: value, year: qtr});
+        })
+        return avgCache = nationalSeries;
+      }
+
       function draw() {
+        // reset cache
+        avgCache = null;
 
         data = $scope.mapData.data;
+
         var year = $scope.year;
-        var colorf = $scope.colorf;
+        colorf = $scope.colorf;
         var yearRange = $scope.yearRange;
 
         if (!data) return;
 
-        // check if national series exists
-        var us_series = !!data[0];
-
         // start with US line
         var nationalSeries;
-        if (us_series) {
+        if (!!data[0]) {
           nationalSeries = getSeries(data, 0);
+        } else {
+          nationalSeries = avgUS(data);
         }
 
         var container = d3.select(node)
@@ -110,7 +133,7 @@ angular.module('wages')
             .domain(yearRange)
             .range([0, width]);
 
-        var y = d3.scale.linear()
+        y = d3.scale.linear()
             .domain([0, colorf.domain()[1]*1.5])
             .range([height, 0]);
 
@@ -122,7 +145,7 @@ angular.module('wages')
 
         var variable = $scope.variable;
 
-        var yAxis = d3.svg.axis()
+        yAxis = d3.svg.axis()
             .tickFormat(fmt[variable])
             .scale(y)
             .orient('left');
@@ -143,7 +166,7 @@ angular.module('wages')
             .attr('transform', 'translate(0,' + height + ')')
             .call(xAxis);
 
-        svg.append('g')
+        yAxisG = svg.append('g')
             .attr('class', 'y axis')
             .call(yAxis);
 
@@ -175,28 +198,26 @@ angular.module('wages')
         lineContainer = svg.append('g');
 
         var values;
-        if (us_series) {
 
-          legend.append('line')
-            .attr('class', 'line legend-line')
-            .attr('x1', 0)
-            .attr('x2', legend_line_width)
-            .attr('y1', -legend_height/4)
-            .attr('y2', -legend_height/4);
+        legend.append('line')
+          .attr('class', 'line legend-line')
+          .attr('x1', 0)
+          .attr('x2', legend_line_width)
+          .attr('y1', -legend_height/4)
+          .attr('y2', -legend_height/4);
 
-          legend.append('text')
-            .text("U.S.")
-            .attr('x', legend_line_width + 5)
-            .attr('y', function() {
-              var bb = this.getBBox();
-              return legend_height/2 - bb.height/2;
-            });
+        legend.append('text')
+          .text("U.S.")
+          .attr('x', legend_line_width + 5)
+          .attr('y', function() {
+            var bb = this.getBBox();
+            return legend_height/2 - bb.height/2;
+          });
 
-          values = nationalSeries.values.filter(cap(yearRange));
-          lineContainer.append('path')
-            .attr('class', 'line')
-            .attr('d', line(values));        
-        }
+        values = nationalSeries.values.filter(cap(yearRange));
+        usLine = lineContainer.append('path')
+          .attr('class', 'line')
+          .attr('d', line(values));
 
         countyLineContainer = lineContainer.append('g');
 
@@ -210,12 +231,50 @@ angular.module('wages')
         countyLineContainer.select('path').remove();
         countyLegendContainer.select('g').remove();
 
-        if (!id) return;
+        var usData;
 
         var yearRange = $scope.yearRange;
 
+
+        if (!id) {
+          y.domain([0, colorf.domain()[1]*1.5]);
+          yAxisG
+            .transition()
+            .duration(300)
+            .call(yAxis);
+
+          var nationalSeries;
+          if (!!data[0]) {
+            nationalSeries = getSeries(data, 0);
+          } else {
+            nationalSeries = avgUS(data);
+          }
+
+          usLine.attr('d', line(nationalSeries.values.filter(cap(yearRange))))
+
+          return;
+        }
+
+
         var legend = countyLegendContainer.append('g')
             .attr('transform', "translate(10," + legend_height + ")");
+
+        var lineData = getSeries(data, id).values.filter(cap(yearRange));
+        var max = d3.max(lineData, function(d) { return d.value; });
+
+        var nationalSeries;
+        if (!!data[0]) {
+          nationalSeries = getSeries(data, 0);
+        } else {
+          nationalSeries = avgUS(data);
+        }
+
+        y.domain([0, (max > colorf.domain()[1]*1.5) ? max : colorf.domain()[1]*1.5 ])
+
+        yAxisG
+          .transition()
+          .duration(300)
+          .call(yAxis);
 
         legend.append('line')
           .attr('class', 'line legend-line county-line')
@@ -238,7 +297,9 @@ angular.module('wages')
         countyLineContainer
           .append('path')
           .attr('class', 'line county-line')
-          .attr('d', line(getSeries(data, id).values.filter(cap(yearRange))));
+          .attr('d', line(lineData));
+
+        usLine.attr('d', line(nationalSeries.values.filter(cap(yearRange))))
 
       }
 
