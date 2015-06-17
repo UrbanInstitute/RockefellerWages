@@ -117,9 +117,9 @@
 
       </div>
 
-      <div class="row graphic-row">
+      <div class="row">
 
-        <div class="col-lg-4 chart-container">
+        <div class="col-lg-4">
           <div class="row">
             <div class="col-sm-12">
               <label class="title">Nationwide Distribution {{ year | yearFormat }}</label>
@@ -143,9 +143,20 @@
                    map-data="mapData"></div>
             </div>
           </div>
+          <div class="row">
+            <div class="notes">
+              <div>Notes:</div>
+              <div>
+                <ul>
+                  <li>Wage and employment data are for private industry only; public employment is excluded.</li>
+                  <li>Some employment and wage data are missing because of suppression by the Bureau of Labor Statistics.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="col-lg-8 map-container no-pad-right">
+        <div class="col-lg-8 no-pad-right">
           <label class="title">{{variableDescription}}, Counties in {{ year | yearFormat }}</label>
           <div county-legend
                colorf="colorf"

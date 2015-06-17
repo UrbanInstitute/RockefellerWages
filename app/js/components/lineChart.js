@@ -147,6 +147,7 @@ angular.module('wages')
 
         yAxis = d3.svg.axis()
             .tickFormat(fmt[variable])
+            .ticks(8)
             .scale(y)
             .orient('left');
 
