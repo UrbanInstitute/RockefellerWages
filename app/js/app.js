@@ -14,7 +14,7 @@ angular.module('wages', [
     'ui.select',
     'ui.slider'
   ])
-  .controller('main', ['$scope', function($scope) {
+  .controller('main', ['$scope', '$rootScope', function($scope, $rootScope) {
 
     var tooltip = $scope.tooltip = tooltipFactory();
 
@@ -41,7 +41,8 @@ angular.module('wages', [
     $scope.variableDescription = "";
 
     $scope.$watch('variable', function(variable) {
-      colorf.domain([0, variable == "wages" ? 1200 : 400]);
+      $rootScope.variable = variable;
+      colorf.domain([0, variable == "wages" ? 1400 : 350]);
       if (variable === "wages") {
         $scope.variableDescription = "Weekly Wages ($2014)";
       } else if (variable === "employment") {

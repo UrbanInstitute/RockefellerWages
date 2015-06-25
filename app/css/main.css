@@ -54,6 +54,10 @@ label.title {
   margin-bottom: 20px;
 }
 
+.indent-industry {
+  margin-left: 20px;
+}
+
 .urban-header {
   display: inline-block;
   width: 100%;
@@ -180,6 +184,10 @@ label.title {
     border-radius: 0;
     font-weight: 400;
   -webkit-box-shadow: none;
+}
+
+.option.ui-select-choices-row-inner:hover {
+  background-color: #aaaaaa;
 }
 
 .ui-select-choices.selectize-dropdown {

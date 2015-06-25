@@ -36,17 +36,21 @@ angular.module('wages')
             });
 
 
+            function makeBins(colorf, step) {
+                var bins = d3.range(0,colorf.domain()[1]+1, step);
+                bins.shift();
+                return bins;
+            }
+
             function draw() {
 
                 map_data = $scope.mapData.data;
+                var variable = $scope.variable;
 
                 var colorf = $scope.colorf;
 
-                // invert the color scale range to produce bins
-                var bins = colorf.range()
-                    .map(function (c) {
-                        return colorf.invertExtent(c)[1];
-                    });
+                var step = (variable === 'wages' ? 100 :  20);
+                var bins = makeBins(colorf, step);
 
                 var data = _.chain(map_data)
                     .pluck($scope.year)
@@ -92,10 +96,9 @@ angular.module('wages')
                     })])
                     .range([height, 0]);
 
-                var variable = $scope.variable;
 
                 var xAxis = d3.svg.axis()
-                    .tickValues([0].concat(bins).concat(color_domain[1]))
+                    .tickValues([0].concat(makeBins(colorf, step*2)))
                     .scale(x)
                     .tickFormat(fmt[variable])
                     .orient("bottom");
@@ -155,12 +158,9 @@ angular.module('wages')
                 if (!bar) return;
 
                 var colorf = $scope.colorf;
-
-                // invert the color scale range to produce bins
-                var bins = colorf.range()
-                    .map(function (c) {
-                        return colorf.invertExtent(c)[1];
-                    });
+                var variable = $scope.variable;
+                var step = (variable === 'wages' ? 100 :  20);
+                var bins = makeBins(colorf, step);
 
                 var vals = _.chain(map_data)
                     .pluck($scope.year)
