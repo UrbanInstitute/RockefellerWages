@@ -74,16 +74,16 @@
     <div class="col-lg-sm col-lg-10 col-lg-offset-1">
 
       <div class="row">
-        <div class="col-sm-12 no-pad-left no-pad-right">
+        <div class="col-md-12 no-pad-left no-pad-right">
           <h1>Wages and Employment Explorer</h1>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-sm-8 no-pad-left">
+        <div class="col-md-8 no-pad-left">
           <p>Created to help researchers, reporters, and others, the Urban Institute’s <em>Wages and Employment Explorer</em> enables you to better understand patterns in quarterly employment and wages across time and geography. Data are available at the county level and compared to nationwide averages. Use the two options to the right to select wages or employment, and the drop-down menus below to select different industries.  </p>
         </div>
-        <div class="col-sm-4 no-pad-right">
+        <div class="col-md-4 no-pad-right">
           <button class="btn btn-primary"
                   ng-class='{"selected" : variable=="wages"}'
                   ng-click='variable="wages"'>
@@ -99,7 +99,7 @@
 
       <div class="row">
 
-        <div class="col-sm-7 no-pad-left">
+        <div class="col-md-7 no-pad-left">
           <h4>Category: {{category.selected.name}}</h4>
           <ui-select ng-model="category.selected" 
                      theme="selectize" 
@@ -122,7 +122,7 @@
           </ui-select>
         </div>
 
-        <div class="col-sm-5 no-pad-right">
+        <div class="col-md-5 no-pad-right">
           <h4>Select Quarter</h4>
           <div class="year-slider"
                ui-slider="{range: 'max'}"
@@ -138,9 +138,9 @@
 
       <div class="row">
 
-        <div class="col-sm-4">
+        <div class="col-md-4">
           <div class="row">
-            <div class="col-sm-12">
+            <div class="col-md-12">
               <label class="title">Nationwide Distribution {{ year | yearFormat }}</label>
               <div histogram
                    map-data="mapData"
@@ -151,7 +151,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-12">
+            <div class="col-md-12">
               <label class="title">{{variableDescription}} Over Time</label>
               <div line-chart
                    county-hover="countyHover"
@@ -178,7 +178,7 @@
           </div>
         </div>
 
-        <div class="col-sm-8 no-pad-right">
+        <div class="col-md-8 no-pad-right">
           <label class="title">{{variableDescription}}, Counties in {{ year | yearFormat }}</label>
           <div county-legend
                colorf="colorf"
@@ -196,7 +196,7 @@
                year="year"></div>            
             
         </div>
-          <div class="col-sm-12 footer" >
+          <div class="col-md-12 footer" >
           <img src="images/urban_grid_elevate_blue_trans.png" /> <p class="footer-info">Developed by Tim Meko and Ben Southgate. Financial support provided by the Rockefeller Foundation. Special thanks to Greg Acs, Elizabeth Forney, and Jonathan Schwabish.</p></div>
 
       </div>
