@@ -2,6 +2,25 @@
 <html lang="en" ng-app="wages">
 <head>
   <meta charset="UTF-8">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@urbaninstitute">
+    <meta name="twitter:creator" content="@urbaninstitute">
+    <meta name="twitter:title" content="Wages and Employment Explorer">
+    <meta name="twitter:description" content="Use this interactive tool to discover the average weekly wages in your county for a variety of jobs and fields.">
+    <meta name="twitter:image" content="http://datatools.urban.org/features/average-wages/images/social.jpg">
+
+    <meta property="og:title" content="Wages and Employment Explorer"/>
+    <meta property="og:description" content="Use this interactive tool to discover the average weekly wages in your county for a variety of jobs and fields." />
+    <meta property="og:image" content="http://datatools.urban.org/features/average-wages/images/social.jpg"/>
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="400">
+    <meta property="og:image:height" content="400">
+    <meta property="og:url" content="http://urbn.is/wages">
+    
+<link rel="shortcut icon" href="http://www.urban.org/sites/all/themes/urban/images/favicon.ico" type="image/vnd.microsoft.icon" />
+
+    
   <title>American Wages</title>
   <link rel="stylesheet" href="bower.css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -18,7 +37,7 @@
       <div class="urban-header">
         <div class="share">
           <div class="logo">
-            <a href="http://www.urban.org">
+            <a href="http://www.urban.org" target="_blank">
               <img src="images/logo-sm.png" class="visible-xs-inline-block logo-image" alt="The Urban Institute" />
               <img src="images/logo-lg.png" class="hidden-xs logo-image" alt="The Urban Institute" />
             </a>
@@ -29,17 +48,17 @@
             </div>
           </div>
           <div class="socials">
-            <a href="https://twitter.com/home?status=New%20@urbaninstitute%20interactive:%20Breaking%20down%20mortgages%20by%20race%20http://urbn.is/MortgageByRace%20%23HMDA" target="_blank">
+            <a href="http://twitter.com/intent/tweet?text=INTERACTIVE%3A%20Discover%20the%20average%20weekly%20wages%20in%20your%20county%20for%20a%20variety%20of%20jobs%20%26%20fields%20http%3A%2F%2Furbn.is%2Fwages%20(via%20%40urbaninstitute)" target="_blank">
               <div class="circle twitter">
                 <i class="fa fa-twitter"></i>
               </div>
             </a>
-            <a href="https://www.facebook.com/sharer/sharer.php?u=http://urbn.is/MortgageByRace" target="_blank">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://urbn.is/wages" target="_blank">
               <div class="circle facebook">
                 <i class="fa fa-facebook"></i>
               </div>
             </a>
-            <a href="mailto:%20?Subject=New interactive feature by the Urban Institute&amp;Body=Hi! I thought you'd be interested in this new interactive feature from the Urban Institute: “A new view of the housing boom and bust” http://urbn.is/http://urbn.is/MortgageByRace" target="_blank">
+            <a href="mailto:%20?Subject= Interactive Wages and Employment Explorer &amp;Body=Hi! I thought you'd be interested in this new interactive from the Urban Institute: “Wages and Employment Explorer” http://urbn.is/wages" target="_blank">
               <div class="circle email">
                 <i class="fa fa-envelope"></i>
               </div>
@@ -52,19 +71,19 @@
   <!-- END HEADER EXAMPLE -->
 
   <div class="container" id="content">
-    <div class="col-sm-12 col-lg-10 col-lg-offset-1">
+    <div class="col-lg-sm col-lg-10 col-lg-offset-1">
 
       <div class="row">
-        <div class="col-sm-12 no-pad-left no-pad-right">
+        <div class="col-md-12 no-pad-left no-pad-right">
           <h1>Wages and Employment Explorer</h1>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-sm-8 no-pad-left">
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, esse aperiam ipsam eos tenetur reprehenderit dolorem distinctio qui obcaecati quidem? Aperiam id odit ut at quod eligendi cupiditate eos accusamus molestiae placeat ab quae, minima officia saepe aliquam maxime quasi culpa vitae! Voluptatibus, at voluptatem, velit rem ipsum ipsa officia.</p>
+        <div class="col-md-8 no-pad-left">
+          <p>Created to help researchers, reporters, and others, the Urban Institute’s <em>Wages and Employment Explorer</em> enables you to better understand patterns in quarterly employment and wages across time and geography. Data are available at the county level and compared to nationwide averages. Use the two options to the right to select wages or employment, and the drop-down menus below to select different industries.  </p>
         </div>
-        <div class="col-sm-4 no-pad-right">
+        <div class="col-md-4 no-pad-right">
           <button class="btn btn-primary"
                   ng-class='{"selected" : variable=="wages"}'
                   ng-click='variable="wages"'>
@@ -80,7 +99,7 @@
 
       <div class="row">
 
-        <div class="col-sm-7 no-pad-left">
+        <div class="col-md-7 no-pad-left">
           <h4>Category: {{category.selected.name}}</h4>
           <ui-select ng-model="category.selected" 
                      theme="selectize" 
@@ -103,7 +122,7 @@
           </ui-select>
         </div>
 
-        <div class="col-sm-5 no-pad-right">
+        <div class="col-md-5 no-pad-right">
           <h4>Select Quarter</h4>
           <div class="year-slider"
                ui-slider="{range: 'max'}"
@@ -119,9 +138,9 @@
 
       <div class="row">
 
-        <div class="col-lg-4">
+        <div class="col-md-4">
           <div class="row">
-            <div class="col-sm-12">
+            <div class="col-md-12">
               <label class="title">Nationwide Distribution {{ year | yearFormat }}</label>
               <div histogram
                    map-data="mapData"
@@ -132,7 +151,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-12">
+            <div class="col-md-12">
               <label class="title">{{variableDescription}} Over Time</label>
               <div line-chart
                    county-hover="countyHover"
@@ -150,13 +169,16 @@
                 <ul>
                   <li>Wage and employment data are for private industry only; public employment is excluded.</li>
                   <li>Some employment and wage data are missing because of suppression by the Bureau of Labor Statistics.</li>
+                    <li>Average weekly wages inflated to 2013 dollars using the Consumer Price Index.
+</li><li>Data from the Bureau of Labor Statistics’ <a href="http://www.bls.gov/cew/datatoc.htm" target="_blank">Quarterly Census of Employment and Wages.</a> 
+</li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="col-lg-8 no-pad-right">
+        <div class="col-md-8 no-pad-right">
           <label class="title">{{variableDescription}}, Counties in {{ year | yearFormat }}</label>
           <div county-legend
                colorf="colorf"
@@ -174,8 +196,8 @@
                year="year"></div>            
             
         </div>
-          <div class="col-lg-12 footer" >
-          <img src="images/urban_grid_elevate_blue_trans.png" /> <p class="footer-info">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, esse aperiam ipsam eos tenetur reprehenderit dolorem distinctio qui obcaecati quidem? Aperiam id odit ut at quod eligendi cupiditate eos accusamus molestiae placeat ab quae, minima officia saepe aliquam maxime quasi culpa vitae! Voluptatibus, at voluptatem, velit rem ipsum ipsa officia.</p></div>
+          <div class="col-md-12 footer" >
+          <img src="images/urban_grid_elevate_blue_trans.png" /> <p class="footer-info">Developed by Tim Meko and Ben Southgate. Financial support provided by the Rockefeller Foundation. Special thanks to Greg Acs, Elizabeth Forney, and Jonathan Schwabish.</p></div>
 
       </div>
 

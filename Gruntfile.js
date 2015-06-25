@@ -12,7 +12,7 @@ module.exports = function(grunt) {
   if (/^win/.test(process.platform)) {
     deploy_path = 'B:/bsouthga/rfdata/';
   } else {
-    deploy_path = '/Volumes/Features/bsouthga/rfdata/';
+    deploy_path = '/Volumes/Features/average-wages/';
   }
 
 
