@@ -134,8 +134,11 @@ angular.module('wages')
             .range([0, width]);
 
         y = d3.scale.linear()
-            .domain([0, colorf.domain()[1]*1.5])
             .range([height, 0]);
+
+        var max = d3.max(nationalSeries.values, function(d) { return d.value; });
+        y.domain([0, (max > colorf.domain()[1]*1.5) ? max : colorf.domain()[1]*1.5 ]);
+
 
         var xAxis = d3.svg.axis()
             .ticks(5)
@@ -238,11 +241,6 @@ angular.module('wages')
 
 
         if (!id) {
-          y.domain([0, colorf.domain()[1]*1.5]);
-          yAxisG
-            .transition()
-            .duration(300)
-            .call(yAxis);
 
           var nationalSeries;
           if (!!data[0]) {
@@ -250,6 +248,15 @@ angular.module('wages')
           } else {
             nationalSeries = avgUS(data);
           }
+
+          var max = d3.max(nationalSeries.values, function(d) { return d.value; });
+
+          y.domain([0, (max > colorf.domain()[1]*1.5) ? max : colorf.domain()[1]*1.5 ])
+
+          yAxisG
+            .transition()
+            .duration(300)
+            .call(yAxis);
 
           usLine.attr('d', line(nationalSeries.values.filter(cap(yearRange))))
 
@@ -261,7 +268,7 @@ angular.module('wages')
             .attr('transform', "translate(10," + legend_height + ")");
 
         var lineData = getSeries(data, id).values.filter(cap(yearRange));
-        var max = d3.max(lineData, function(d) { return d.value; });
+
 
         var nationalSeries;
         if (!!data[0]) {
@@ -270,6 +277,7 @@ angular.module('wages')
           nationalSeries = avgUS(data);
         }
 
+        var max = d3.max(lineData.concat(nationalSeries.values), function(d) { return d.value; });
         y.domain([0, (max > colorf.domain()[1]*1.5) ? max : colorf.domain()[1]*1.5 ])
 
         yAxisG

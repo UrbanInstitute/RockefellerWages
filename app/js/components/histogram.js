@@ -110,9 +110,8 @@ angular.module('wages')
                     .attr("transform", function (d) {
                         return "translate(" + x(d.x) + "," + y(d.y) + ")";
                     })
-                
                     .attr("stroke", "#ffffff")
-                .attr("stroke-width", "1");
+                    .attr("stroke-width", "1");
 
                 rects = bar.append("rect")
                     .attr("x", 1)
