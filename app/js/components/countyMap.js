@@ -10,7 +10,7 @@ var county_names = require('../../json/county-names.json');
 var topology = topojson.feature(us, us.objects.counties).features;
 
 angular.module('wages')
-  .directive('countyMap', ['$filter', function($filter) {
+  .directive('countyMap', ['$filter', '$rootScope', function($filter, $rootScope) {
 
     var yearFormat = $filter('yearFormat');
 
@@ -19,8 +19,10 @@ angular.module('wages')
       var svg;
       var data;
       var counties;
+      var clickedNode;
+      var margin, width, height, zoom;
       var node = $element.get(0);
-      var tooltip = $scope.tooltip;
+      var path = d3.geo.path();
 
       // initial render
       draw();
@@ -39,15 +41,39 @@ angular.module('wages')
       var zeros = d3.format("05d");
 
 
+      function targetCounty(node, duration) {
+
+        // zoom to bounding box : http://bl.ocks.org/mbostock/9656675
+        var bounds = path.bounds(node.__data__),
+            dx = bounds[1][0] - bounds[0][0],
+            dy = bounds[1][1] - bounds[0][1],
+            x = (bounds[0][0] + bounds[1][0]) / 2,
+            y = (bounds[0][1] + bounds[1][1]) / 2,
+            extent = zoom.scaleExtent(),
+            scale = 0.9 / Math.max(dx / width, dy / height);
+
+        // cap scale at zoom bounds
+        scale = Math.min(extent[1], Math.max(extent[0], scale));
+        var translate = [width / 2 - scale * x, height / 2 - scale * y];
+
+        // zoom to boundary
+        svg.transition()
+            .duration(duration || 750)
+            .call(zoom.translate(translate).scale(scale).event);
+
+      }
+
+
+
       function draw() {
 
         var bb = node.getBoundingClientRect();
 
         var ratio = 588 / 1011;
 
-        var margin = { top: 0, right: 0, bottom: 0, left: 0 },
-            width = bb.width - margin.left - margin.right,
-            height = (bb.width*ratio) - margin.top - margin.bottom;
+        margin = { top: 0, right: 0, bottom: 0, left: 0 },
+        width = bb.width - margin.left - margin.right,
+        height = (bb.width*ratio) - margin.top - margin.bottom;
 
         // slightly off center to allow for
         // better display of the aleutian islands
@@ -59,7 +85,7 @@ angular.module('wages')
             .scale(width*1.2)
             .translate(center);
 
-        var path = d3.geo.path().projection(projection);
+        path.projection(projection);
 
         var container = d3.select(node)
           .classed('county-map', true);
@@ -77,29 +103,64 @@ angular.module('wages')
             .data(topology)
           .enter().append('path')
             .attr('d', path)
+            .attr('id', function(d) { return 'county-' + d.id; })
             .attr('class', 'county-map-paths');
 
+        if ($rootScope.clickedNode) {
+          var id = '#county-' + $rootScope.tooltipData.id;
+          var county = d3.select(id);
+          highlightNode.call(county.node(), county.data()[0]);
+        }
+
+
+
+        function highlightNode(d, click) {
+          var year = $scope.year;
+          var id = zeros(d.id);
+          var county = county_names[id];
+          var variable = $scope.variable;
+
+          d3.select(this).moveToFront();
+
+          var node = this;
+          $scope.$apply(function() {
+            if (click) {
+              $rootScope.clickedNode = node;
+            }
+            $scope.countyHover.id = id;
+            $rootScope.tooltipData.node = node;
+            $rootScope.tooltipData.id = id;
+            $rootScope.tooltipData.title = county.name + ", " + county.state;
+            $rootScope.tooltipData.getVal = function(id) {
+              return data[id];
+            };
+          })
+        }
+
+        function unHighlightNode() {
+          $scope.$apply(function() {
+            $rootScope.tooltipData.node = null;
+            $scope.countyHover.id = null;
+          });
+        }
+
+
         counties
-          .on('mouseover', function(d) {
-            var year = $scope.year;
-            var id = zeros(d.id);
-            var county = county_names[id];
-
-            $scope.$apply(function() { $scope.countyHover.id = id; });
-
-            var variable = $scope.variable;
-
+          .on('click', function(d) {
+            if ($rootScope.clickedNode) return;
+            var that = this;
+            highlightNode.call(this, d, true);
+            counties.classed('selected-county', function() {
+              return this === that;
+            })
             d3.select(this).moveToFront();
-            tooltip
-              .text({
-                "title" : county.name + ", " + county.state,
-                "value" : yearFormat(year) + ": " + fmt[variable](data[d.id][year])
-              })
-              .position(this);
+            targetCounty(this);
+          })
+          .on('mouseover', function(d) {
+            !$rootScope.clickedNode && highlightNode.call(this, d);
           })
           .on('mouseout', function() {
-            tooltip.hide();
-            $scope.$apply(function() { $scope.countyHover.id = null; });
+            !$rootScope.clickedNode && unHighlightNode();
           });
 
         if (data) {
@@ -118,13 +179,15 @@ angular.module('wages')
             return (10 + 30*i) + 'px';
           });
 
+        var resetMap = function(){
+          svg.transition()
+                .duration(750)
+                .call(zoom.translate([0,0]).scale(1).event);
+        };
+
         // recenter map on click of reset button
         container.select(".fa-home")
-          .on('click', function(){
-            svg.transition()
-                  .duration(750)
-                  .call(zoom.translate([0,0]).scale(1).event);
-          });
+          .on('click', resetMap);
 
         // zoom in + out
         container.selectAll(".fa-search-plus, .fa-search-minus")
@@ -133,9 +196,14 @@ angular.module('wages')
             zoomByFactor((zoomin ? 2 : (1/2)), 500);
           });
 
+        $rootScope.$on('close-tooltip', function() {
+          resetMap();
+          counties.classed('selected-county', false);
+        })
+
 
         // initialize zoom based on dimensions
-        var zoom = d3.behavior.zoom()
+        zoom = d3.behavior.zoom()
           .center(center)
           .scaleExtent(zoom_extent)
           .on("zoom", zoomed);
@@ -167,9 +235,10 @@ angular.module('wages')
       function zoomed() {
         var s = d3.event.scale,
             t = d3.event.translate;
+        $rootScope.$broadcast('zooming');
         counties
           .attr("transform","translate("+ t +")scale("+ s +")")
-          .style("stroke-width", 0.25*(1 / s) + "px");
+          .style("stroke-width", 0.5*(1 / s) + "px");
       }
 
       function fill() {
@@ -215,7 +284,6 @@ angular.module('wages')
         legendHover : '=',
         countyHover : '=',
         mapData : '=',
-        tooltip : '=',
         mapHover : '='
       }
     };

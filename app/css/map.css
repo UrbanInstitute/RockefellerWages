@@ -35,6 +35,10 @@
   cursor: pointer;
 }
 
+.selected-county {
+  stroke: #000;
+}
+
 .map-control {
   padding: 5px 10px;
   position: absolute;

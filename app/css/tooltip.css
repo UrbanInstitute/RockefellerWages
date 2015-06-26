@@ -5,10 +5,11 @@
   color: #000;
   font-weight: normal;
   background: #ffffff;
-  padding: 5px 10px;
+  padding: 7px 15px;
   border: 1px solid #cccccc;
   border-radius: 5px;
   z-index: 12;
+  text-align: center;
 }
 
 #tooltip:after, #tooltip:before {
@@ -38,4 +39,24 @@
 
 #tooltip span.title {
   font-weight: bold;
+}
+
+.unclick {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 20px;
+  height: 20px;
+  display: block;
+  background-color: #aaa;
+  color: #fff;
+  border-radius: 50%;
+  line-height: 18px;
+  text-align: center;
+  border: 1px solid #fff;
+}
+
+.unclick:hover {
+  background-color: #0096d2;
+  cursor: pointer;
 }

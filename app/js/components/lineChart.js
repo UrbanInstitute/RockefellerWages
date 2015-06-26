@@ -6,7 +6,7 @@ var responsive = require('../util/responsive');
 var county_names = require('../../json/county-names.json');
 
 angular.module('wages')
-  .directive('lineChart', ['$filter', function($filter) {
+  .directive('lineChart', ['$filter', '$rootScope', function($filter, $rootScope) {
 
     var yearFormat = $filter('yearFormat');
 
@@ -95,6 +95,7 @@ angular.module('wages')
         })
         return avgCache = nationalSeries;
       }
+
 
       function draw() {
         // reset cache
@@ -224,6 +225,10 @@ angular.module('wages')
           .attr('d', line(values));
 
         countyLineContainer = lineContainer.append('g');
+
+        if ($rootScope.clickedNode) {
+          drawCountyLine($rootScope.tooltipData.id);
+        }
 
       }
 

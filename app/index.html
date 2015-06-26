@@ -2,7 +2,7 @@
 <html lang="en" ng-app="wages">
 <head>
   <meta charset="UTF-8">
-    
+
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@urbaninstitute">
     <meta name="twitter:creator" content="@urbaninstitute">
@@ -17,10 +17,10 @@
     <meta property="og:image:width" content="400">
     <meta property="og:image:height" content="400">
     <meta property="og:url" content="http://urbn.is/wages">
-    
+
 <link rel="shortcut icon" href="http://www.urban.org/sites/all/themes/urban/images/favicon.ico" type="image/vnd.microsoft.icon" />
 
-    
+
   <title>American Wages</title>
   <link rel="stylesheet" href="bower.css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -101,9 +101,9 @@
 
         <div class="col-md-7 no-pad-left">
           <h4>Category: {{category.selected.name}}</h4>
-          <ui-select ng-model="category.selected" 
-                     theme="selectize" 
-                     style="width: 100%;" 
+          <ui-select ng-model="category.selected"
+                     theme="selectize"
+                     style="width: 100%;"
                      class="category-select">
             <ui-select-match placeholder="Select an category in the list...">{{$select.selected.name}}</ui-select-match>
             <ui-select-choices repeat="category in categories | filter: $select.search">
@@ -113,7 +113,7 @@
           <h4>Industry: {{industry.selected.name}}</h4>
           <ui-select ng-model="industry.selected"
                      class="industry-select"
-                     theme="selectize" 
+                     theme="selectize"
                      style="width: 100%;">
             <ui-select-match placeholder="Select an industry in the list...">{{$select.selected.name}}</ui-select-match>
             <ui-select-choices repeat="industry in industries | filter: $select.search">
@@ -170,7 +170,7 @@
                   <li>Wage and employment data are for private industry only; public employment is excluded.</li>
                   <li>Some employment and wage data are missing because of suppression by the Bureau of Labor Statistics.</li>
                     <li>Average weekly wages inflated to 2013 dollars using the Consumer Price Index.
-</li><li>Data from the Bureau of Labor Statistics’ <a href="http://www.bls.gov/cew/datatoc.htm" target="_blank">Quarterly Census of Employment and Wages.</a> 
+</li><li>Data from the Bureau of Labor Statistics’ <a href="http://www.bls.gov/cew/datatoc.htm" target="_blank">Quarterly Census of Employment and Wages.</a>
 </li>
                 </ul>
               </div>
@@ -192,25 +192,22 @@
                legend-hover="legendHover"
                county-hover="countyHover"
                colorf="colorf"
-               tooltip="tooltip"
-               year="year"></div>            
-            
+               year="year"></div>
+
         </div>
           <div class="col-md-12 footer" >
           <img src="images/urban_grid_elevate_blue_trans.png" /> <p class="footer-info">Developed by Tim Meko and Ben Southgate. Financial support provided by the Rockefeller Foundation. Special thanks to Greg Acs, Elizabeth Forney, and Jonathan Schwabish.</p></div>
 
       </div>
 
-       
-
-
     </div>
   </div>
 
-  <div id="tooltip">
-    <span class="title"></span>
-    <span class="value"></span>
-  </div>
+  <tooltip tooltip-data="tooltipData"
+           year="year"
+           variable="variable"
+           category="category.selected.name"
+           industry="industry.selected.name"></tooltip>
 
 </body>
 </html>

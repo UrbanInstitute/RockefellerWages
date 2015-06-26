@@ -1,3 +1,72 @@
+'use strict';
+
+var fmt = require('./format.js');
+
+angular.module('wages')
+  .directive('tooltip', ['$rootScope', '$filter', '$timeout', function($rootScope, $filter, $timeout) {
+
+    var yearFormat = $filter('yearFormat');
+
+    return {
+      restrict: 'EA',
+      template: '\
+        <div id="tooltip" class="clicked-county">\
+          <i class="fa fa-times unclick" ng-click="stopTracking()" ng-show="clickedNode"></i>\
+          <div class="title" ng-bind="tooltipData.title"></div>\
+          <div class="value" ng-bind="tooltipData.value"></div>\
+        </div>',
+      scope: {
+        tooltipData: '=',
+        year: '=',
+        variable: '=',
+        industry: '=',
+        category: '='
+      },
+      link: function($scope, $element, $attrs) {
+        var tt = tooltip().hide();
+
+        $scope.$watch('tooltipData.node', function(n) {
+          tt.position(n);
+          if (!n) return;
+          refresh();
+        });
+
+        function refresh() {
+          var td = $scope.tooltipData;
+          if (!(td && td.getVal)) return;
+          var year = $scope.year;
+          var variable = $scope.variable;
+          var data = td.getVal(td.id);
+          console.log($scope.category, $scope.industry, data && data[year])
+          $scope.tooltipData.value = yearFormat(year) + ": " + ((data && data[year]) ? fmt[variable](data[year]) : 'N/A');
+        }
+        var laggedRefresh = function() {
+          $timeout(refresh, 100);
+        };
+
+        $scope.$watch('year', refresh);
+        $scope.$watch('variable', laggedRefresh);
+        $scope.$watch('industry', laggedRefresh);
+        $scope.$watch('category', laggedRefresh);
+
+        $rootScope.$watch('clickedNode', function(node) {
+          $scope.clickedNode = node;
+        });
+
+        $rootScope.$on('zooming', function() {
+          var node = $scope.tooltipData.node;
+          tt.position(node, true);
+        });
+
+        $scope.stopTracking = function() {
+          $rootScope.clickedNode = null;
+          $rootScope.$broadcast('close-tooltip');
+        };
+
+       }
+    }
+  }])
+
 
 function tooltip() {
 
@@ -5,8 +74,7 @@ function tooltip() {
 
   var self = {
     position: position,
-    text : text,
-    hide : position.bind(self, null)
+    hide : function() { return this.position(null); }
   };
 
   var $win = $(window);
@@ -52,7 +120,7 @@ function tooltip() {
     // if hiding / showing transition must
     // come before / after style
     if (no_transition) {
-      tt.style(pos).style('opacity', node ? 1 : 0);
+      tt.style(pos);
     } else {
       if (node) {
         tt.style(pos)
@@ -74,13 +142,5 @@ function tooltip() {
     return this;
   }
 
-  function text(data) {
-    tt.select('span.title').text(data.title);
-    tt.select('span.value').text(data.value);
-    return this;
-  }
-
   return self;
 }
-
-module.exports = tooltip;

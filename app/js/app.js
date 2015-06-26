@@ -1,7 +1,6 @@
 'use strict';
 
 var industries = require('../json/industry_codes.json');
-var tooltipFactory = require('./util/tooltip');
 
 d3.selection.prototype.moveToFront = function() {
     return this.each(function() {
@@ -16,7 +15,7 @@ angular.module('wages', [
   ])
   .controller('main', ['$scope', '$rootScope', function($scope, $rootScope) {
 
-    var tooltip = $scope.tooltip = tooltipFactory();
+    $scope.tooltipData = $rootScope.tooltipData = {};
 
     var colors = $scope.colors = [
       "#ecf5ff",
@@ -27,9 +26,6 @@ angular.module('wages', [
       "#00578b",
       "#010f22"
     ];
-
-    // hide tooltip initially
-    tooltip.hide();
 
     // choropleth + legend color scale
     var colorf = $scope.colorf = d3.scale.quantize()
@@ -108,3 +104,4 @@ require('./components/countyLegend');
 require('./components/histogram');
 require('./components/lineChart');
 require('./components/yearAxis');
+require('./util/tooltip');
